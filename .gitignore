@@ -1,0 +1,24 @@
+!*.dll
+!Assets/Tiled2Unity/Meshes/*.obj
+
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+Library/
+Assets/GraphCaches*
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+obj/
+*.svd
+*.userprefs
+/*.csproj
+*.pidb
+*.suo
+/*.sln
+*.user
+*.unityproj
+*.booproj
