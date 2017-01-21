@@ -75,10 +75,14 @@ public class DiscreteWave : MonoBehaviour
 
     private void SolveSegmentAmplitudes()
     {
-        foreach( WaveSegment ws in AllWaveSegments)
-        {
-            ws.SmoothAcceleration();
-            //ws.SmoothVelocity();
-        }
+		foreach (WaveSegment ws in AllWaveSegments)
+		{
+			ws.SmoothAcceleration();
+		}
+
+		foreach (WaveSegment ws in AllWaveSegments)
+		{
+			ws.SmoothFinished();
+		}
     }
 }

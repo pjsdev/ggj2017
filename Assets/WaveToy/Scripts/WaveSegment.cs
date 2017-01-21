@@ -5,6 +5,7 @@ using UnityEngine;
 public class WaveSegment : MonoBehaviour
 {
     public float Acceleration;
+	public float SmoothedAcceleration = 0;
     public float Velocity;
     public float ImpulseVelocity;
 
@@ -26,29 +27,35 @@ public class WaveSegment : MonoBehaviour
         if (Acceleration > 1f) Acceleration = 1f;
     }
 
-    void Update()
-    {
-        TimeSinceImpulse = Time.time - LastImpulseTime;
+	void Update()
+	{
+		TimeSinceImpulse = Time.time - LastImpulseTime;
 
-        Acceleration += -Amplitude*0.5f;
-        Acceleration *= 0.995f;
+		Acceleration += -Amplitude*0.5f;
+		Acceleration *= 0.95f;
 
-        Velocity = Acceleration * Time.fixedDeltaTime * 3f;
+		if (Mathf.Abs(Acceleration) > 1f) Acceleration = Mathf.Sign(Acceleration) * 1f;
 
-        ImpulseVelocity *= 0.97f;
-        Amplitude += Velocity;
-    }
+		Velocity = Acceleration * Time.fixedDeltaTime * 3f;
 
-    public void SmoothAcceleration()
-    {
-        Acceleration = Mathf.Lerp(Acceleration, NextSegment.Acceleration, 0.3f + Mathf.Abs(NextSegment.Acceleration) * 0.3f);
-		Acceleration = Mathf.Lerp(Acceleration, PreviousSegment.Acceleration, 0.3f + Mathf.Abs(PreviousSegment.Acceleration) * 0.3f);
-        //Acceleration = Mathf.Lerp(Acceleration, (PreviousSegment.Acceleration + NextSegment.Acceleration) * 0.5f, 0.85f);
-    }
-    public void SmoothVelocity()
-    {
-        Velocity = Mathf.Lerp(Velocity, PreviousSegment.Velocity, 0.3f + Mathf.Abs(PreviousSegment.Velocity) * 0.3f);
-        Velocity = Mathf.Lerp(Velocity, NextSegment.Velocity, 0.3f + Mathf.Abs(NextSegment.Velocity) * 0.3f);
-        //Velocity = Mathf.Lerp(Velocity, (PreviousSegment.Velocity + NextSegment.Velocity) * 0.5f, 0.95f);
-    }
+		ImpulseVelocity *= 0.97f;
+		Amplitude += Velocity;
+	}
+
+	public void SmoothAcceleration()
+	{
+		float fromBehind = Mathf.Lerp(Acceleration, PreviousSegment.Acceleration, 0.3f + Mathf.Abs(PreviousSegment.Acceleration) * 0.7f);
+		float fromAhead = Mathf.Lerp(Acceleration, NextSegment.Acceleration, 0.3f + Mathf.Abs(NextSegment.Acceleration) * 0.7f);
+		SmoothedAcceleration = Mathf.Max(fromBehind, fromAhead);
+	}
+	public void SmoothFinished()
+	{
+		Acceleration = SmoothedAcceleration;
+	}
+
+	public void SmoothVelocity()
+	{
+		Velocity = Mathf.Lerp(Velocity, PreviousSegment.Velocity, 0.3f + Mathf.Abs(PreviousSegment.Velocity) * 0.3f);
+		Velocity = Mathf.Lerp(Velocity, NextSegment.Velocity, 0.3f + Mathf.Abs(NextSegment.Velocity) * 0.3f);
+	}
 }
