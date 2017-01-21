@@ -28,6 +28,10 @@ public class CharacterSelect : State
 	Text CountdownText;
 	float CountdownCurrent = CountdownTime;
 
+	GameObject Header1;
+	GameObject Header2;
+	GameObject ControlsPrompt;
+
 	public CharacterSelect (Game _game)
 	{
 		AlreadyUsedKeys = new List<char> ();
@@ -42,6 +46,13 @@ public class CharacterSelect : State
 		Debug.Assert (textTransform != null);
 		CountdownText = textTransform.GetComponent<Text>();
 		Debug.Assert (CountdownText != null);
+
+		Header1 = CharacterSelectUI.transform.Find ("Header1").gameObject;
+		Header2 = CharacterSelectUI.transform.Find ("Header2").gameObject;
+		ControlsPrompt = CharacterSelectUI.transform.Find ("ControlsPrompt").gameObject;
+
+		Header2.SetActive (false);
+		ControlsPrompt.SetActive (false);
 
 		CharacterSelectUI.SetActive (false);
 	}
@@ -100,6 +111,8 @@ public class CharacterSelect : State
 				CurrentlyJoining = new KeyData ();
 				CurrentlyJoining.KeyOne = _candidateKey.ToString();
 
+				Header1.SetActive (false);
+				Header2.SetActive (true);
 			}
 			// if we are finishing off the old player
 			else
@@ -111,9 +124,14 @@ public class CharacterSelect : State
 
 				game.Players.Add(game.factory.CreatePlayer (
 					CurrentlyJoining.KeyOne, CurrentlyJoining.KeyTwo, 
-					Random.insideUnitCircle * 3f));
+					game.SpawnSlots.Consume().position));
 
 				CurrentlyJoining = null;
+				Header2.SetActive (false);
+				Header1.SetActive (true);
+
+				if (game.Players.Count == 1)
+					ControlsPrompt.SetActive (true);
 			}
 		}
 	}

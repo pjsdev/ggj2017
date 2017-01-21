@@ -6,6 +6,13 @@ public class Factory : MonoBehaviour
 {
 	GameObject PlayerPrefab = null;
 
+	public List<Sprite> ReadyTexts;
+
+	public Sprite RandomReadyText()
+	{
+		return ReadyTexts [Random.Range (0, ReadyTexts.Count)];
+	}
+
 	void Awake () 
 	{
 		PlayerPrefab = Resources.Load ("Player") as GameObject;

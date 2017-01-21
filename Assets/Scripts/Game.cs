@@ -14,11 +14,18 @@ public class Game : StateMachine
 
 	public List<PlayerController> Players;
 
+	public Slots SpawnSlots;
+
 	void Start () 
 	{
 		Music = GetComponent <AudioSource> ();
 		factory = GameObject.FindObjectOfType<Factory> ();
 		Debug.Assert (factory != null);
+
+		var spawnSlotsGO = GameObject.FindGameObjectWithTag ("SpawnPositions");
+		Debug.Assert (spawnSlotsGO != null);
+		SpawnSlots = spawnSlotsGO.GetComponent<Slots> ();
+		Debug.Assert (SpawnSlots != null);
 
 		Players = new List<PlayerController> ();
 

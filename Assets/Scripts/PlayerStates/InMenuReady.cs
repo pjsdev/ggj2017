@@ -19,6 +19,8 @@ public class InMenuReady : State
 
 		Ready = Controller.transform.Find (
 			"ReadyText").GetComponent<SpriteRenderer>();
+
+		Ready.enabled = false;
 	}
 
 	#region State implementation
@@ -39,6 +41,7 @@ public class InMenuReady : State
 		PlayerController.SetHairAndSuitColor (SpriteGO,
 			Controller.HairColor, Controller.SuitColor);
 
+		Ready.sprite = Controller.factory.RandomReadyText ();
 		Ready.enabled = true;
 	}
 
