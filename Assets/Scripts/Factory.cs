@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Factory : MonoBehaviour 
 {
-	GameObject PlayerPrefab = null;
+	GameObject PaddlePrefab = null;
+	GameObject PlayerController = null;
 
 	public List<Sprite> ReadyTexts;
 
@@ -15,7 +16,8 @@ public class Factory : MonoBehaviour
 
 	void Awake () 
 	{
-		PlayerPrefab = Resources.Load ("Player") as GameObject;
+		PaddlePrefab = Resources.Load ("Paddle") as GameObject;
+		PlayerController = Resources.Load ("PlayerController") as GameObject;
 	}
 		
 	public AudioClip GetMenuMusic()
@@ -28,9 +30,16 @@ public class Factory : MonoBehaviour
 		return Resources.Load ("Sounds/GameMusic") as AudioClip;
 	}
 
-	public PlayerController CreatePlayer(string _keyOne, string _keyTwo, Vector3 _pos)
+	public PlayerPaddle CreatePaddle()
 	{
-		var created = Instantiate (PlayerPrefab, _pos, Quaternion.identity);
+		var created = Instantiate (PaddlePrefab);
+		var paddle = created.GetComponent<PlayerPaddle> ();
+		return paddle;
+	}
+
+	public PlayerController CreatePlayerController(string _keyOne, string _keyTwo, Vector3 _pos)
+	{
+		var created = Instantiate (PlayerController, _pos, Quaternion.identity);
 		var controller = created.GetComponent<PlayerController> ();
 		controller.KeyOne = _keyOne;
 		controller.KeyTwo = _keyTwo;

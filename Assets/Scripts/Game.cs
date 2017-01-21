@@ -16,8 +16,13 @@ public class Game : StateMachine
 
 	public Slots SpawnSlots;
 
-	void Start () 
+	public DiscreteWave Waves;
+
+	void Start ()
 	{
+		Waves = GameObject.FindObjectOfType<DiscreteWave> ();
+		Waves.gameObject.SetActive (false);
+
 		Music = GetComponent <AudioSource> ();
 		factory = GameObject.FindObjectOfType<Factory> ();
 		Debug.Assert (factory != null);

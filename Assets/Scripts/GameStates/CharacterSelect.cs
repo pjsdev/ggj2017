@@ -8,6 +8,8 @@ using SimpleFSM;
 
 public class CharacterSelect : State 
 {
+	static readonly float CountdownTime = 3f;
+
 	public class KeyData 
 	{
 		public string KeyOne;
@@ -23,7 +25,6 @@ public class CharacterSelect : State
 	GameObject CharacterSelectUI;
 
 	// countdown
-	static readonly float CountdownTime = 5f;
 	GameObject CountdownPanel;
 	Text CountdownText;
 	float CountdownCurrent = CountdownTime;
@@ -73,7 +74,7 @@ public class CharacterSelect : State
 		if (game.Players.Count > 0 &&
 			game.Players.All (p => p.CurrentState () == typeof(InMenuReady)))
 		{
-			Debug.Log ("All Players Ready...");
+			// Debug.Log ("All Players Ready...");
 			CountdownPanel.SetActive (true);
 			CountdownCurrent -= Time.deltaTime;
 
@@ -122,7 +123,7 @@ public class CharacterSelect : State
 				Debug.LogFormat("Finishing new player {0},{1}",
 					CurrentlyJoining.KeyOne, CurrentlyJoining.KeyTwo);
 
-				game.Players.Add(game.factory.CreatePlayer (
+				game.Players.Add(game.factory.CreatePlayerController (
 					CurrentlyJoining.KeyOne, CurrentlyJoining.KeyTwo, 
 					game.SpawnSlots.Consume().position));
 

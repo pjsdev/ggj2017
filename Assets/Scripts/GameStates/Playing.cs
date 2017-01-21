@@ -30,6 +30,8 @@ public class Playing : State
 
 	public void Enter ()
 	{
+		game.Waves.gameObject.SetActive (true);
+
 		foreach (PlayerController p in game.Players)
 		{
 			p.Enter<OnWave> ();	

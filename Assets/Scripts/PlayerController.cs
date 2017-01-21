@@ -12,7 +12,7 @@ public class PlayerController : StateMachine
 	public Color SuitColor;
 		
 	[HideInInspector]
-	public Factory factory;
+	public Game game;
 
 	public static void SetHairAndSuitColor(GameObject _root, Color _hair, Color _suit)
 	{
@@ -25,8 +25,8 @@ public class PlayerController : StateMachine
 
 	void Start () 
 	{
-		factory = GameObject.FindObjectOfType<Factory> ();
-		Debug.Assert (factory != null);
+		game = GameObject.FindObjectOfType<Game> ();
+		Debug.Assert (game != null);
 
 		var InMenuGO = transform.Find ("InMenu").gameObject;
 		var InMenuReadGO = transform.Find ("InMenuReady").gameObject;
