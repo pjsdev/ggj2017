@@ -2,96 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerData
-{
+using SimpleFSM;
+
+public class PlayerController : StateMachine 
+{	
 	public string KeyOne;
 	public string KeyTwo;
 	public Color HairColor;
 	public Color SuitColor;
-}
-
-public class PlayerController : MonoBehaviour 
-{
-	enum PlayerState {
-		InMenu = 0,
-		OnWave,
-		InAir
-	};
-
-	PlayerState State;
-	PlayerData Data;
-
-	SpriteRenderer Hair;
-	SpriteRenderer Suit;
-
-	ColorIterator HairColors;
-	ColorIterator SuitColors;
-
-	void SetData(PlayerData _data)
-	{
-		Data = _data;
-	}
 		
+	public static void SetHairAndSuitColor(GameObject _root, Color _hair, Color _suit)
+	{
+		var hair = _root.transform.Find ("Hair");
+		var suit = _root.transform.Find ("Suit");
+
+		hair.GetComponent<SpriteRenderer> ().color = _hair;
+		suit.GetComponent<SpriteRenderer> ().color = _suit;
+	}
+
 	void Start () 
 	{
-		Hair = transform.Find ("Hair").GetComponent<SpriteRenderer> ();
-		Suit = transform.Find ("Suit").GetComponent<SpriteRenderer> ();
-		HairColors = new ColorIterator ();
-		SuitColors = new ColorIterator ();
-		Hair.color = HairColors.NextColor();
-		Suit.color = SuitColors.NextColor();
-	}
+		var InMenuGO = transform.Find ("InMenu").gameObject;
+		var InMenuReadGO = transform.Find ("InMenuReady").gameObject;
+		var OnWaveGO = transform.Find ("OnWave").gameObject;
 
-	void MenuInput()
-	{
-		if (Input.GetKeyDown (Data.KeyOne))
-		{
-			Hair.color = HairColors.NextColor();
-		}
+		AddState (new InMenu(this, InMenuGO));
+		AddState (new InMenuReady(this, InMenuReadGO));
+		AddState (new OnWave (this, OnWaveGO));
 
-		if (Input.GetKeyDown (Data.KeyTwo))
-		{
-			Suit.color = SuitColors.NextColor();
-		}
-	}
-
-	void WaveInput()
-	{
-		// move
-	}
-
-	void AirInput()
-	{
-		// do tricks
-	}
-
-	void Update () 
-	{
-		switch (State)
-		{
-		case PlayerState.InMenu:
-			MenuInput ();
-			break;
-		case PlayerState.OnWave:
-			WaveInput ();
-			break;
-		case PlayerState.InAir:
-			AirInput ();
-			break;
-		}
-	}
-
-	static GameObject CachedPlayerPrefab = null;
-	public static PlayerController CreatePlayer(PlayerData _data)
-	{
-		if (CachedPlayerPrefab == null)
-		{
-			CachedPlayerPrefab = Resources.Load ("Player") as GameObject;
-		}
-
-		var created = Instantiate (CachedPlayerPrefab);
-		var controller = created.GetComponent<PlayerController> ();
-		controller.SetData (_data);
-		return controller;
+		Enter<InMenu> ();
 	}
 }
