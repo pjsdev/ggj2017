@@ -1,11 +1,17 @@
 fileFormatVersion: 2
-guid: 0d1fc19f593e2b84c997a70ce6023874
-timeCreated: 1485045962
+guid: 277afe0ea75733b40ae2a8bc653b5b24
+timeCreated: 1485080694
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Hammerhead
-    21300002: GreatWhite
+    21300000: Zeppelin
+    21300002: Jet
+    21300004: Hammerhead
+    21300006: Sparrow
+    21300008: Duck
+    21300010: Propellor
+    21300012: Seagull
+    21300014: GreatWhite
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -42,7 +48,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 550
+  spritePixelsToUnits: 100
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -88,13 +94,91 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
+      name: Zeppelin
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 412
+        width: 137
+        height: 66
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Jet
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 421
+        width: 136
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
       name: Hammerhead
       rect:
         serializedVersion: 2
-        x: 0
-        y: 44
-        width: 1777
-        height: 662
+        x: 804
+        y: 428
+        width: 104
+        height: 38
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Sparrow
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 326
+        width: 45
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Duck
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 325
+        width: 73
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Propellor
+      rect:
+        serializedVersion: 2
+        x: 807
+        y: 321
+        width: 102
+        height: 45
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Seagull
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 222
+        width: 95
+        height: 57
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -104,10 +188,10 @@ TextureImporter:
       name: GreatWhite
       rect:
         serializedVersion: 2
-        x: 2266
-        y: 0
-        width: 1776
-        height: 750
+        x: 579
+        y: 225
+        width: 118
+        height: 51
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

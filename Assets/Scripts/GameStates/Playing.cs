@@ -8,6 +8,7 @@ public class Playing : State
 {
 	Game game;
 	GameObject GameUI;
+	GameObject CentralCoral;
 
 	AudioClip Music;
 
@@ -15,8 +16,10 @@ public class Playing : State
 	{
 		game = _game;
 		GameUI = GameObject.FindGameObjectWithTag ("PlayingUI");
+		CentralCoral = GameObject.FindGameObjectWithTag ("CentralCoral");
 		Debug.Assert (GameUI != null);
 		GameUI.SetActive (false);
+		CentralCoral.SetActive (false);
 
 		Music = game.factory.GetGameMusic ();
 	}
@@ -37,6 +40,7 @@ public class Playing : State
 			p.Enter<OnWave> ();	
 		}
 
+		CentralCoral.SetActive (true);
 		GameUI.SetActive (true);
 		game.Music.clip = Music;
 		game.Music.Play ();
@@ -44,6 +48,7 @@ public class Playing : State
 
 	public void Exit ()
 	{
+		CentralCoral.SetActive (false);
 		GameUI.SetActive (false);
 	}
 

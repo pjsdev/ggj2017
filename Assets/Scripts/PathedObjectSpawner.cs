@@ -42,6 +42,15 @@ public class PathedObjectSpawner : MonoBehaviour
 			}
 
 			Current = Instantiate(Prefab, start.position, Quaternion.identity);
+
+
+
+			Vector3 newDir = Vector3.RotateTowards(
+				Current.transform.forward, 
+				end.position - start.position, 1f, 0.0F);
+
+			Current.transform.rotation = Quaternion.LookRotation (newDir);
+
 			Current.transform.DOMove (
 				end.position, Random.Range(TravelTimeRange.x, TravelTimeRange.y))
 				.SetEase(Easing)

@@ -52,7 +52,7 @@ public class Surfer : MonoBehaviour
         //Debug.Log("AllWaveSegmentsReference[" + CurrentSegmentIndex + "] : " + AllWaveSegmentsReference[CurrentSegmentIndex].Amplitude);
         transform.localPosition = new Vector3(
 			transform.localPosition.x,
-			-AllWaveSegmentsReference[CurrentSegmentIndex].Amplitude * 3f,
+			AllWaveSegmentsReference[CurrentSegmentIndex].Amplitude * 3f,
 			transform.localPosition.z);
 
         //Debug.Log("AllWaveSegmentsReference[" + CurrentSegmentIndex + "] HorizontalVelocity : " + HorizontalVelocity);

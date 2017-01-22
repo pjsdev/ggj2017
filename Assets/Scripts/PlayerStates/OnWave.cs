@@ -49,7 +49,6 @@ public class OnWave : State
 
 		Controller.transform.position = Vector3.zero;
 
-		Controller.transform.localRotation = Quaternion.Euler (new Vector3 (0, 0, -180f));
 		Controller.transform.SetParent (Paddle.transform, true);
 
 		var surfers = GameObject.FindObjectsOfType<Surfer> ();
@@ -61,6 +60,7 @@ public class OnWave : State
 	{
 		SpriteGO.SetActive (false);
 		Object.Destroy (surfer);
+		Debug.Log ("dfdfsdf");
 		GameObject.Destroy (Paddle.gameObject);
 	}
 

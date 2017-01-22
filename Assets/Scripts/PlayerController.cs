@@ -31,10 +31,12 @@ public class PlayerController : StateMachine
 		var InMenuGO = transform.Find ("InMenu").gameObject;
 		var InMenuReadGO = transform.Find ("InMenuReady").gameObject;
 		var OnWaveGO = transform.Find ("OnWave").gameObject;
+		var WipeoutGO = transform.Find ("Wipeout").gameObject;
 
 		AddState (new InMenu(this, InMenuGO));
 		AddState (new InMenuReady(this, InMenuReadGO));
 		AddState (new OnWave (this, OnWaveGO));
+		AddState (new Wipeout(this, WipeoutGO));
 
 		Enter<InMenu> ();
 	}
