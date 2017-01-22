@@ -8,15 +8,12 @@ public class TitleScreen : State
 {
 	Game game;
 	GameObject TitleUI;
-	AudioClip Music;
 
 	public TitleScreen(Game _game)
 	{
 		game = _game;
 		TitleUI = GameObject.FindGameObjectWithTag ("TitleScreen");
 		Debug.Assert (TitleUI != null);
-
-		Music = game.factory.GetMenuMusic ();
 	}
 
 	#region State implementation
@@ -31,7 +28,7 @@ public class TitleScreen : State
 
 	public void Enter ()
 	{
-		game.Music.clip = Music;
+		game.Music.clip = game.factory.GetMenuMusic ();
 		game.Music.Play ();
 		TitleUI.SetActive (true);
 	}

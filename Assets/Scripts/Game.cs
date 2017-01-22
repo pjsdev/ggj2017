@@ -18,7 +18,7 @@ public class Game : StateMachine
 
 	public DiscreteWave Waves;
 
-	public void SpinComplete()
+	public void AddStyle(int _points)
 	{
 		
 	}

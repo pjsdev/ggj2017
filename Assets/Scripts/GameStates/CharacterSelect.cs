@@ -60,7 +60,13 @@ public class CharacterSelect : State
 
 	public void Enter ()
 	{
-		// play menu music again
+		AudioClip music = game.factory.GetMenuMusic ();
+		if (game.Music.clip != music)
+		{
+			game.Music.clip = music;
+			game.Music.Play ();
+		}
+
 		CountdownPanel.SetActive (false);
 		CharacterSelectUI.SetActive (true);
 	}

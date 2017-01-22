@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using SimpleFSM;
 
@@ -12,6 +13,9 @@ public class Playing : State
 	GameObject CentralCoral;
 	GameObject ObstacleSpawners;
 	AudioClip Music;
+
+	float CurrentTime = 60f;
+	Text Timer;
 
 	public Playing(Game _game)
 	{
@@ -24,6 +28,8 @@ public class Playing : State
 		CentralCoral.SetActive (false);
 		ObstacleSpawners.SetActive (false);
 
+		Timer = GameUI.transform.Find ("Timer").GetComponent<Text>();
+
 		Music = game.factory.GetGameMusic ();
 	}
 
@@ -32,17 +38,18 @@ public class Playing : State
 		while (true)
 		{
 			yield return null;
+
+			// check game over
 			var activePlayers = game.Players.Where (p => p.CurrentState () != typeof(Wipeout));
-			if (activePlayers.Count () == 1)
+			if (activePlayers.Count () == 0)
 			{
 				Debug.LogWarning ("Game Over");
 				break;
-			} 
-			else if(activePlayers.Count () == 0)
-			{
-				Debug.LogError ("Game Over With no winner");
-				Debug.Break();
 			}
+
+			// update timer if we are still playing
+			CurrentTime -= Time.deltaTime;
+			Timer.text = Mathf.CeilToInt (CurrentTime).ToString ();
 		}
 
 		yield return new WaitForSeconds (5f);
@@ -67,7 +74,7 @@ public class Playing : State
 			p.Enter<OnWave> ();	
 		}
 
-		// ObstacleSpawners.SetActive (true);
+		ObstacleSpawners.SetActive (true);
 		CentralCoral.SetActive (true);
 		GameUI.SetActive (true);
 		game.Music.clip = Music;
