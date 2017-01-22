@@ -29,6 +29,14 @@ public class PlayerPaddle : MonoBehaviour
     private float TimeSinceMove = 0;
     private float LastMoveTime = 0;
 
+	[HideInInspector]
+	public SpriteRenderer Renderer;
+
+	void Awake()
+	{
+		Renderer = transform.GetChild(0).GetComponent<SpriteRenderer> ();
+	}
+
     public void MoveClockwise()
     {
         LastMoveTime = Time.time;
@@ -55,7 +63,8 @@ public class PlayerPaddle : MonoBehaviour
         PreviousFrameAngle = CurrentAngle;
         CurrentAngle += Velocity;
 
-        if (Mathf.Abs(Velocity) > MAX_VELOCITY) Velocity = Mathf.Sign(Velocity) * MAX_VELOCITY;
+        if (Mathf.Abs(Velocity) > MAX_VELOCITY)
+			Velocity = Mathf.Sign(Velocity) * MAX_VELOCITY;
 
         CurrentAngle = (CurrentAngle % 360f); if (CurrentAngle < 0) CurrentAngle += 360f;
 
@@ -75,7 +84,7 @@ public class PlayerPaddle : MonoBehaviour
             DecreaseVelocity();
         }
 
-        AddImpulse(PreviousSegmentIndex, CurrentSegmentIndex, Velocity / PlayerPaddle.MAX_VELOCITY * 0.5f);// * WaveFalloff.Evaluate(TimeSinceMove));
+        AddImpulse(PreviousSegmentIndex, CurrentSegmentIndex, Velocity / PlayerPaddle.MAX_VELOCITY * 0.1f);// * WaveFalloff.Evaluate(TimeSinceMove));
     }
 
     public void AddImpulse(int startIndex, int endIndex, float _force)
@@ -89,7 +98,9 @@ public class PlayerPaddle : MonoBehaviour
         for (int i = 0; i < totalSegments; ++i)
         {
             idx = startIndex + ((_force > 0) ? i : -i);
-            idx = (idx >= AllWaveSegmentsReference.Count ? idx - AllWaveSegmentsReference.Count : (idx < 0 ? idx + AllWaveSegmentsReference.Count : idx));
+            idx = (idx >= AllWaveSegmentsReference.Count ?
+				   idx - AllWaveSegmentsReference.Count :
+				   (idx < 0 ? idx + AllWaveSegmentsReference.Count : idx));
 
             AllWaveSegmentsReference[idx].AddImpuse(_force);
         }
