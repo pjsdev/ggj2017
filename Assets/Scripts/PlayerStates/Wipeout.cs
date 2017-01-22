@@ -30,8 +30,12 @@ public class Wipeout : State
 		Vector3 dir = (SpriteGO.transform.position - Vector3.zero).normalized;
 
 		SpriteGO.SetActive (true);
-		SpriteGO.transform.DOMove (Random.insideUnitCircle, 3f);
-		SpriteGO.transform.DORotate (Random.insideUnitCircle, 3f);
+
+		PlayerController.SetHairAndSuitColor (SpriteGO,
+			Controller.HairColor, Controller.SuitColor);
+
+		SpriteGO.transform.DOMove (dir * 10f, 3f).SetRelative(true);
+		SpriteGO.transform.DORotate (new Vector3(0, 0, 360f), 0.1f).SetRelative(true).SetLoops(30);
 	}
 
 	public void Exit ()

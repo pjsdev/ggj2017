@@ -18,6 +18,11 @@ public class Game : StateMachine
 
 	public DiscreteWave Waves;
 
+	public void SpinComplete()
+	{
+		
+	}
+
 	void Start ()
 	{
 		Waves = GameObject.FindObjectOfType<DiscreteWave> ();

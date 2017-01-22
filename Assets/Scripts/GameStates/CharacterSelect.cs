@@ -60,6 +60,7 @@ public class CharacterSelect : State
 
 	public void Enter ()
 	{
+		// play menu music again
 		CountdownPanel.SetActive (false);
 		CharacterSelectUI.SetActive (true);
 	}

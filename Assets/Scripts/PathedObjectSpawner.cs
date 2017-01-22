@@ -15,9 +15,32 @@ public class PathedObjectSpawner : MonoBehaviour
 	Transform Pos1;
 	Transform Pos2;
 
+	void OnDrawGizmosSelected()
+	{
+		var p1 = transform.Find ("Pos1");
+		var p2 = transform.Find ("Pos2");
+
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawLine (p1.position, p2.position);
+
+		Gizmos.color = Color.red;
+		Gizmos.DrawCube (p1.position, Vector3.one * 0.25f);
+		Gizmos.DrawCube (p2.position, Vector3.one * 0.25f);
+	}
+
 	GameObject Current;
 
-	IEnumerator Start () 
+	void OnEnable()
+	{
+		StartCoroutine (RunSpawns());
+	}
+
+	void Start()
+	{
+		StartCoroutine (RunSpawns());
+	}
+
+	IEnumerator RunSpawns () 
 	{
 		Pos1 = transform.Find ("Pos1");
 		Pos2 = transform.Find ("Pos2");
@@ -42,14 +65,11 @@ public class PathedObjectSpawner : MonoBehaviour
 			}
 
 			Current = Instantiate(Prefab, start.position, Quaternion.identity);
+			Vector3 targetDir = end.position - start.position;
+			targetDir.Normalize ();
 
-
-
-			Vector3 newDir = Vector3.RotateTowards(
-				Current.transform.forward, 
-				end.position - start.position, 1f, 0.0F);
-
-			Current.transform.rotation = Quaternion.LookRotation (newDir);
+			Current.transform.rotation = Quaternion.Euler (0, 0,
+				Mathf.Atan2(targetDir.y, targetDir.x) * Mathf.Rad2Deg);
 
 			Current.transform.DOMove (
 				end.position, Random.Range(TravelTimeRange.x, TravelTimeRange.y))

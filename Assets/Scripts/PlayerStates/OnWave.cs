@@ -12,6 +12,8 @@ public class OnWave : State
 	PlayerPaddle Paddle;
 	Surfer surfer;
 
+	Vector3 OldPos;
+
 	public OnWave(PlayerController _controller, GameObject _onWaveGO)
 	{
 		Controller = _controller;
@@ -47,6 +49,7 @@ public class OnWave : State
 		surfer = Controller.gameObject.AddComponent<Surfer> ();
 		surfer.AllWaveSegmentsReference = Paddle.AllWaveSegmentsReference;
 
+		OldPos = Controller.transform.position;
 		Controller.transform.position = Vector3.zero;
 
 		Controller.transform.SetParent (Paddle.transform, true);
@@ -60,7 +63,11 @@ public class OnWave : State
 	{
 		SpriteGO.SetActive (false);
 		Object.Destroy (surfer);
-		Debug.Log ("dfdfsdf");
+
+		Controller.transform.SetParent (null);
+		Controller.transform.position = OldPos;
+		Controller.transform.localRotation = Quaternion.Euler (Vector3.zero);
+
 		GameObject.Destroy (Paddle.gameObject);
 	}
 
