@@ -10,6 +10,7 @@ public class ObstacleRotator : MonoBehaviour
     void Awake()
     {
         CurrentRotation.z = Random.Range(0f, 360f);
+        transform.localEulerAngles = CurrentRotation;
     }
     void Update()
     {

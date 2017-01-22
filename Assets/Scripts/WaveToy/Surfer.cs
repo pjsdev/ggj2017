@@ -10,6 +10,7 @@ public class Surfer : MonoBehaviour
     public int CurrentSegmentIndex = 0;
 
     private int MAX_SCORE_MULTIPLIER = 4;
+    private float TIME_TO_INCREASE_MULTIPLIER = 5f;
     public int ScoreMultiplier = 1;
     public int PlayerScore = 0;
     public float TimeIncreasedMultiplier = 0;
@@ -22,6 +23,8 @@ public class Surfer : MonoBehaviour
     public bool Stunned = false;
     public float TimeStunned = 0;
 
+    private int Spins = 0;
+    private float SpinAngle = 0;
     public bool InAir = false;
     public float LastTimeOnWater = 0;
     private Quaternion q = Quaternion.identity;
@@ -35,6 +38,8 @@ public class Surfer : MonoBehaviour
         Stunned = true;
         TimeStunned = Time.time;
         ScoreMultiplier = 1;
+        Spins = 0;
+        SpinAngle = 0;
     }
     void Update()
     {
@@ -48,7 +53,7 @@ public class Surfer : MonoBehaviour
         }
         else
         {
-            if (ScoreMultiplier < MAX_SCORE_MULTIPLIER && (Time.time - TimeIncreasedMultiplier) > 1f)
+            if (ScoreMultiplier < MAX_SCORE_MULTIPLIER && (Time.time - TimeIncreasedMultiplier) > TIME_TO_INCREASE_MULTIPLIER)
             {
                 TimeIncreasedMultiplier = Time.time;
                 ScoreMultiplier++;
@@ -112,6 +117,7 @@ public class Surfer : MonoBehaviour
 
         if ( CurrentSegment.Amplitude >= (PlayerHeight - 0.3f) )
         {
+            SpinAngle = 0;
             InAir = false;
             LastTimeOnWater = Time.time;
             if ( !Stunned ) q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z * 0.7f );
@@ -126,26 +132,32 @@ public class Surfer : MonoBehaviour
 
                 if (Input.GetKey(Controller.KeyOne))
                 {
-                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z + 8f);
+                    SpinAngle += 10f;
+                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z + 10f);
                 }
                 if (Input.GetKey(Controller.KeyTwo))
                 {
-                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z - 8f);
+                    SpinAngle -= 10f;
+                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z - 10f);
                 }
             }
         }
+        if (Mathf.Abs(SpinAngle) > 300f) Spins++;
         transform.GetChild(3).transform.localRotation = q;
+
+        Debug.Log("SpinAngle:" + SpinAngle + ", spins: " + Spins);
+        if ( Spins > 0 )
+        {
+            AddScore(1000);
+            Spins = 0;
+            SpinAngle = 0;
+        }
 
         //Debug.Log("AllWaveSegmentsReference[" + CurrentSegmentIndex + "] : " + AllWaveSegmentsReference[CurrentSegmentIndex].Amplitude);
         transform.localPosition = new Vector3(
             transform.localPosition.x,
-            PlayerHeight * DiscreteWave.MAX_WAVE_HEIGHT,
+            (PlayerHeight * DiscreteWave.MAX_WAVE_HEIGHT) - (Stunned ? 0.5f : 0f),
 			transform.localPosition.z);
-
-        //Debug.Log("AllWaveSegmentsReference[" + CurrentSegmentIndex + "] HorizontalVelocity : " + HorizontalVelocity);
-        // q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z + HorizontalVelocity*2f);
-        // transform.localRotation = q;
-		// transform.GetChild (3).transform.localRotation = q;
     }
 
     void AddScore(int score)
