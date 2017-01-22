@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using DG.Tweening;
+
 using SimpleFSM;
 
 public class Playing : State 
@@ -14,8 +16,10 @@ public class Playing : State
 	GameObject ObstacleSpawners;
 	AudioClip Music;
 
-	float CurrentTime = 60f;
+	float CurrentTime = 15f;
 	Text Timer;
+	Text StylePoints;
+	GameObject OuttaTime;
 
 	public Playing(Game _game)
 	{
@@ -23,12 +27,15 @@ public class Playing : State
 		GameUI = GameObject.FindGameObjectWithTag ("PlayingUI");
 		CentralCoral = GameObject.FindGameObjectWithTag ("CentralCoral");
 		ObstacleSpawners = GameObject.FindGameObjectWithTag ("ObstacleSpawners");
+		OuttaTime = GameObject.FindGameObjectWithTag ("OuttaTime");
 		Debug.Assert (GameUI != null);
 		GameUI.SetActive (false);
+		OuttaTime.SetActive (false);
 		CentralCoral.SetActive (false);
 		ObstacleSpawners.SetActive (false);
 
 		Timer = GameUI.transform.Find ("Timer").GetComponent<Text>();
+		StylePoints = GameUI.transform.Find ("Style").GetComponent<Text>();
 
 		Music = game.factory.GetGameMusic ();
 	}
@@ -39,6 +46,8 @@ public class Playing : State
 		{
 			yield return null;
 
+			StylePoints.text = "StyLe - " + game.totPoints.ToString ();
+
 			// update timer if we are still playing
 			CurrentTime -= Time.deltaTime;
 			Timer.text = Mathf.CeilToInt (CurrentTime).ToString ();
@@ -46,6 +55,11 @@ public class Playing : State
 			if (CurrentTime < 0)
 			{
 				Debug.LogWarning ("Game Over Time out");
+				OuttaTime.SetActive (true);
+				OuttaTime.transform.DOScale (2.5f, 1f)
+					.SetLoops(2, LoopType.Yoyo)
+					.SetEase(Ease.OutElastic);
+
 				break;
 			}
 		}
@@ -74,6 +88,7 @@ public class Playing : State
 
 		ObstacleSpawners.SetActive (true);
 		CentralCoral.SetActive (true);
+		OuttaTime.gameObject.SetActive (false);
 		GameUI.SetActive (true);
 		game.Music.clip = Music;
 		game.Music.Play ();
@@ -87,6 +102,7 @@ public class Playing : State
 		CentralCoral.SetActive (false);
 		GameUI.SetActive (false);
 		ObstacleSpawners.SetActive (false);
+		OuttaTime.SetActive (false);
 
 		foreach(var o in GameObject.FindGameObjectsWithTag("Obstacle"))
 		{
