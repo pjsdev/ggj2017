@@ -48,6 +48,7 @@ public class OnWave : State
 
 		surfer = Controller.gameObject.AddComponent<Surfer> ();
 		surfer.AllWaveSegmentsReference = Paddle.AllWaveSegmentsReference;
+		surfer.Controller = Controller;
 
 		OldPos = Controller.transform.position;
 		Controller.transform.position = Vector3.zero;

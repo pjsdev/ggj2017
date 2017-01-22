@@ -17,6 +17,8 @@ public class Surfer : MonoBehaviour
     public float LastTimeOnWater = 0;
     private Quaternion q = Quaternion.identity;
 
+	public PlayerController Controller;
+
     void Update()
     {
         if (AllWaveSegmentsReference == null) return;
