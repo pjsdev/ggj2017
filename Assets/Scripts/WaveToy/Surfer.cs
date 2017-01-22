@@ -9,9 +9,18 @@ public class Surfer : MonoBehaviour
     public float HorizontalVelocity = 0;
     public int CurrentSegmentIndex = 0;
 
+    private int MAX_SCORE_MULTIPLIER = 4;
+    public int ScoreMultiplier = 1;
+    public int PlayerScore = 0;
+    public float TimeIncreasedMultiplier = 0;
+
     private Game GameComponent;
     private float PlayerVelocity = 0;
     private float PlayerHeight = 0;
+
+    public float STUN_TIME = 2f;
+    public bool Stunned = false;
+    public float TimeStunned = 0;
 
     public bool InAir = false;
     public float LastTimeOnWater = 0;
@@ -19,10 +28,33 @@ public class Surfer : MonoBehaviour
 
 	public PlayerController Controller;
 
+    public void ObstacleHit()
+    {
+        PlayerVelocity = 0;
+        InAir = false;
+        Stunned = true;
+        TimeStunned = Time.time;
+        ScoreMultiplier = 1;
+    }
     void Update()
     {
         if (AllWaveSegmentsReference == null) return;
 
+        if ( Stunned )
+        {
+            q.eulerAngles = new Vector3(0, 0, Mathf.Lerp( q.eulerAngles.z, 180f, 0.3f) );
+            if (Time.time - TimeStunned > STUN_TIME) Stunned = false;
+            TimeIncreasedMultiplier = Time.time;
+        }
+        else
+        {
+            if (ScoreMultiplier < MAX_SCORE_MULTIPLIER && (Time.time - TimeIncreasedMultiplier) > 1f)
+            {
+                TimeIncreasedMultiplier = Time.time;
+                ScoreMultiplier++;
+                Debug.Log("SCORE MULTIPLIER INCREASED! " + ScoreMultiplier);
+            }
+        }
         GameComponent = GameObject.FindObjectOfType<Game>();
 
         float _angle = transform.eulerAngles.z - 90f;
@@ -82,25 +114,27 @@ public class Surfer : MonoBehaviour
         {
             InAir = false;
             LastTimeOnWater = Time.time;
-            q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z * 0.7f );
-
-            transform.GetChild(3).transform.localRotation = q;
+            if ( !Stunned ) q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z * 0.7f );
         }
         else
         {
             InAir = true;
-            GameComponent.AddStyle(1);
 
-            if (Input.GetKey(Controller.KeyOne))
+            if ( !Stunned )
             {
-                q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z + 8f);
+                AddScore(1);
+
+                if (Input.GetKey(Controller.KeyOne))
+                {
+                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z + 8f);
+                }
+                if (Input.GetKey(Controller.KeyTwo))
+                {
+                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z - 8f);
+                }
             }
-            if (Input.GetKey(Controller.KeyTwo))
-            {
-                q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z - 8f);
-            }
-            transform.GetChild(3).transform.localRotation = q;
         }
+        transform.GetChild(3).transform.localRotation = q;
 
         //Debug.Log("AllWaveSegmentsReference[" + CurrentSegmentIndex + "] : " + AllWaveSegmentsReference[CurrentSegmentIndex].Amplitude);
         transform.localPosition = new Vector3(
@@ -114,4 +148,9 @@ public class Surfer : MonoBehaviour
 		// transform.GetChild (3).transform.localRotation = q;
     }
 
+    void AddScore(int score)
+    {
+        PlayerScore += score;
+        GameComponent.AddStyle(1);
+    }
 }
