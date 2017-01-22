@@ -82,11 +82,24 @@ public class Surfer : MonoBehaviour
         {
             InAir = false;
             LastTimeOnWater = Time.time;
+            q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z * 0.7f );
+
+            transform.GetChild(3).transform.localRotation = q;
         }
         else
         {
             InAir = true;
             GameComponent.AddStyle(1);
+
+            if (Input.GetKey(Controller.KeyOne))
+            {
+                q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z + 8f);
+            }
+            if (Input.GetKey(Controller.KeyTwo))
+            {
+                q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z - 8f);
+            }
+            transform.GetChild(3).transform.localRotation = q;
         }
 
         //Debug.Log("AllWaveSegmentsReference[" + CurrentSegmentIndex + "] : " + AllWaveSegmentsReference[CurrentSegmentIndex].Amplitude);
