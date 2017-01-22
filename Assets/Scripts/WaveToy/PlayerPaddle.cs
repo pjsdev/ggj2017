@@ -19,6 +19,7 @@ public class PlayerPaddle : MonoBehaviour
     public AnimationCurve WaveFalloff;
 
     public List<WaveSegment> AllWaveSegmentsReference;
+    public List<float> PlayerWaveSegmentImpulses = new List<float>();
 
     public float Velocity = 0f;
     static public float MIN_VELOCITY = 0f;
@@ -26,15 +27,25 @@ public class PlayerPaddle : MonoBehaviour
     public bool MovedClockwise = false;
     public bool MovedAntiClockwise = false;
 
+    public Game GameComponent;
     private float TimeSinceMove = 0;
     private float LastMoveTime = 0;
 
 	[HideInInspector]
 	public SpriteRenderer Renderer;
 
-	void Awake()
-	{
-		Renderer = transform.GetChild(0).GetComponent<SpriteRenderer> ();
+    void Awake()
+    {
+        GameComponent = GameObject.FindObjectOfType<Game>();
+        Renderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+    }
+
+    void Start()
+    {
+        foreach(WaveSegment ws in AllWaveSegmentsReference)
+        {
+            PlayerWaveSegmentImpulses.Add(0);
+        }
 	}
 
     public void MoveClockwise()
@@ -84,7 +95,7 @@ public class PlayerPaddle : MonoBehaviour
             DecreaseVelocity();
         }
 
-        AddImpulse(PreviousSegmentIndex, CurrentSegmentIndex, Velocity / PlayerPaddle.MAX_VELOCITY * 0.5f);// * WaveFalloff.Evaluate(TimeSinceMove));
+        AddImpulse(PreviousSegmentIndex, CurrentSegmentIndex, Velocity / PlayerPaddle.MAX_VELOCITY * 0.4f);// * WaveFalloff.Evaluate(TimeSinceMove));
     }
 
     public void AddImpulse(int startIndex, int endIndex, float _force)
@@ -94,6 +105,12 @@ public class PlayerPaddle : MonoBehaviour
         int totalSegments = Mathf.Abs(startIndex - endIndex);
         if (totalSegments > DiscreteWave.NUM_SEGMENTS * 0.5) totalSegments = DiscreteWave.NUM_SEGMENTS - totalSegments;
 
+        float MaxForce = 1f / GameComponent.Players.Count;
+
+        _force *= MaxForce;
+
+        //if (Mathf.Abs(_force) > 1f) _force = Mathf.Sign(_force);
+
         int idx = 0;
         for (int i = 0; i < totalSegments; ++i)
         {
@@ -102,7 +119,11 @@ public class PlayerPaddle : MonoBehaviour
 				   idx - AllWaveSegmentsReference.Count :
 				   (idx < 0 ? idx + AllWaveSegmentsReference.Count : idx));
 
-            AllWaveSegmentsReference[idx].AddImpuse(_force);
+            PlayerWaveSegmentImpulses[idx] += _force;
+            if (Mathf.Abs(PlayerWaveSegmentImpulses[idx]) > MaxForce) PlayerWaveSegmentImpulses[idx] = Mathf.Sign(_force) * MaxForce;
+            //Debug.Log("PlayerWaveSegmentImpulses[idx]:" + PlayerWaveSegmentImpulses[idx]);
+            AllWaveSegmentsReference[idx].AddImpuse(PlayerWaveSegmentImpulses[idx]);
+            PlayerWaveSegmentImpulses[idx] = 0;
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class DiscreteWave : MonoBehaviour
 {
+    static public float MAX_WAVE_HEIGHT = 2f;
     static public int NUM_SEGMENTS = 400;
     public int SOLVE_ITTERATIONS = 10;
 
@@ -66,7 +67,7 @@ public class DiscreteWave : MonoBehaviour
         for (int i = 0; i < AllWaveSegments.Count; ++i)
         {
             //SegmentGameObjects[i].transform.GetChild(0).localScale = new Vector3(0, 1f + (AllWaveSegments[i].Amplitude * 1f), 0);
-            SegmentGameObjects[i].transform.GetChild(0).localPosition = new Vector3(0, 3f + (AllWaveSegments[i].Amplitude * 1f), 0);
+            SegmentGameObjects[i].transform.GetChild(0).localPosition = new Vector3(0, 3f + (AllWaveSegments[i].Amplitude * MAX_WAVE_HEIGHT), 0);
         }
     }
     private float SignedMod(float a, float n)

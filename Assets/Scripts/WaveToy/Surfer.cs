@@ -9,6 +9,9 @@ public class Surfer : MonoBehaviour
     public float HorizontalVelocity = 0;
     public int CurrentSegmentIndex = 0;
 
+    private float PlayerVelocity = 0;
+    private float PlayerHeight = 0;
+
     private Quaternion q = Quaternion.identity;
 
     void Update()
@@ -49,10 +52,28 @@ public class Surfer : MonoBehaviour
 
         HorizontalVelocity = _sumOfNearbySegmentToLeft - _sumOfNearbySegmentToRight;
 
+        WaveSegment CurrentSegment = AllWaveSegmentsReference[CurrentSegmentIndex];
+        PlayerVelocity = Mathf.Lerp( PlayerVelocity, CurrentSegment.Velocity, 0.01f + (CurrentSegment.Velocity >= 0 ? CurrentSegment.Velocity*0.3f : 0f));
+
+        PlayerVelocity *= 0.95f;
+
+        float heightDif = CurrentSegment.Amplitude - PlayerHeight;
+        if ( heightDif > 0 )
+        {
+            PlayerVelocity += heightDif * 0.05f;
+        }
+        else
+        {
+            PlayerVelocity += heightDif * 0.005f;
+        }
+        //PlayerHeight = Mathf.Lerp( PlayerHeight, CurrentSegment.Amplitude, (heightDif > 0 ? 0.8f : 0.1f ) );
+
+        PlayerHeight += PlayerVelocity;// * Time.fixedDeltaTime;
+
         //Debug.Log("AllWaveSegmentsReference[" + CurrentSegmentIndex + "] : " + AllWaveSegmentsReference[CurrentSegmentIndex].Amplitude);
         transform.localPosition = new Vector3(
-			transform.localPosition.x,
-			AllWaveSegmentsReference[CurrentSegmentIndex].Amplitude * 3f,
+            transform.localPosition.x,
+            PlayerHeight * DiscreteWave.MAX_WAVE_HEIGHT,
 			transform.localPosition.z);
 
         //Debug.Log("AllWaveSegmentsReference[" + CurrentSegmentIndex + "] HorizontalVelocity : " + HorizontalVelocity);
