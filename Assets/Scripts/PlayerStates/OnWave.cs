@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using SimpleFSM;
+using UnityEngine.UI;
 
 public class OnWave : State 
 {
-	GameObject SpriteGO;
-	PlayerController Controller;
+    GameObject SpriteGO;
+    GameObject ScoreMultiplierCanvas;
+    GameObject Surfboard;
+    Vector3 ReverseSpriteVec = new Vector3(1f, -1f, 1f);
+    PlayerController Controller;
 
 	PlayerPaddle Paddle;
 	Surfer surfer;
@@ -24,7 +28,10 @@ public class OnWave : State
 		Controller = _controller;
 		SpriteGO = _onWaveGO;
 
-		SpriteGO.SetActive (false);
+        ScoreMultiplierCanvas = SpriteGO.transform.FindChild("MultiplierCanvas").gameObject;
+        Surfboard = SpriteGO.transform.FindChild("Surfboard 2").gameObject;
+
+        SpriteGO.SetActive (false);
 	}
 
 	#region State implementation
@@ -35,12 +42,24 @@ public class OnWave : State
         {
             if (Input.GetKey(Controller.KeyOne))
             {
+                Surfboard.transform.localScale = ReverseSpriteVec;
                 Paddle.MoveClockwise();
             }
             if (Input.GetKey(Controller.KeyTwo))
             {
+                Surfboard.transform.localScale = Vector3.one;
                 Paddle.MoveAntiClockwise();
             }
+        }
+        if ( surfer.ScoreMultiplier > 1 )
+        {
+            ScoreMultiplierCanvas.SetActive(true);
+            Text t = ScoreMultiplierCanvas.transform.GetComponentInChildren<Text>();
+            t.text = surfer.ScoreMultiplier + "X";
+        }
+        else
+        {
+            ScoreMultiplierCanvas.SetActive(false);
         }
     }
 
