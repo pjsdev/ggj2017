@@ -84,7 +84,7 @@ public class PlayerPaddle : MonoBehaviour
             DecreaseVelocity();
         }
 
-        AddImpulse(PreviousSegmentIndex, CurrentSegmentIndex, Velocity / PlayerPaddle.MAX_VELOCITY * 0.1f);// * WaveFalloff.Evaluate(TimeSinceMove));
+        AddImpulse(PreviousSegmentIndex, CurrentSegmentIndex, Velocity / PlayerPaddle.MAX_VELOCITY * 0.5f);// * WaveFalloff.Evaluate(TimeSinceMove));
     }
 
     public void AddImpulse(int startIndex, int endIndex, float _force)

@@ -38,26 +38,28 @@ public class WaveSegment : MonoBehaviour
 	{
 		TimeSinceImpulse = Time.time - LastImpulseTime;
 
-		Acceleration += -Amplitude*0.5f;
-		Acceleration *= 0.95f;
+        if (Mathf.Abs(Acceleration) > 1f) Acceleration = Mathf.Sign(Acceleration) * 1f;
 
-		if (Mathf.Abs(Acceleration) > 1f) Acceleration = Mathf.Sign(Acceleration) * 1f;
+        Acceleration -= ( Amplitude * Amplitude ) * 0.25f;
+        //Acceleration += -Amplitude*0.5f;
+		Acceleration *= 0.95f;
 
 		Velocity = Acceleration * Time.fixedDeltaTime * 3f;
 
 		ImpulseVelocity *= 0.97f;
 		Amplitude += Velocity;
+        if (Mathf.Abs(Amplitude) > 1f) Amplitude = Mathf.Sign(Amplitude) * 1f;
 
         var e = SplashPS.emission;
-        e.enabled = (Amplitude > 0.3f);
+        e.enabled = (Amplitude > 0.4f);
 
-        Acceleration += Random.Range(-0.05f, 0.05f);
+        Acceleration += Random.Range(-0.04f, 0.04f);
 	}
 
 	public void SmoothAcceleration()
 	{
-		float fromBehind = Mathf.Lerp(Acceleration, PreviousSegment.Acceleration, 0.3f + Mathf.Abs(PreviousSegment.Acceleration) * 0.7f);
-		float fromAhead = Mathf.Lerp(Acceleration, NextSegment.Acceleration, 0.3f + Mathf.Abs(NextSegment.Acceleration) * 0.7f);
+		float fromBehind = Mathf.Lerp(Acceleration, PreviousSegment.Acceleration, 0.6f + Mathf.Abs(PreviousSegment.Acceleration) * 0.4f);
+		float fromAhead = Mathf.Lerp(Acceleration, NextSegment.Acceleration, 0.6f + Mathf.Abs(NextSegment.Acceleration) * 0.4f);
 		SmoothedAcceleration = Mathf.Max(fromBehind, fromAhead);
 	}
 	public void SmoothFinished()
