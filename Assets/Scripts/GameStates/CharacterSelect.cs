@@ -67,6 +67,8 @@ public class CharacterSelect : State
 			game.Music.Play ();
 		}
 
+		game.SFX.PlayOneShot (game.factory.GetSoundEffect(SoundEffect.PlayerJoin5));
+
 		CountdownPanel.SetActive (false);
 		CharacterSelectUI.SetActive (true);
 	}

@@ -12,6 +12,9 @@ public class Game : StateMachine
 	[HideInInspector]
 	public AudioSource Music;
 
+	[HideInInspector]
+	public AudioSource SFX;
+
 	public List<PlayerController> Players;
 
 	public Slots SpawnSlots;
@@ -32,6 +35,9 @@ public class Game : StateMachine
 		Music = GetComponent <AudioSource> ();
 		factory = GameObject.FindObjectOfType<Factory> ();
 		Debug.Assert (factory != null);
+
+		SFX = transform.Find ("SFX").GetComponent<AudioSource> ();
+		Debug.Assert (SFX != null);
 
 		var spawnSlotsGO = GameObject.FindGameObjectWithTag ("SpawnPositions");
 		Debug.Assert (spawnSlotsGO != null);
