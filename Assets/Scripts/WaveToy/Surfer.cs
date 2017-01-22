@@ -9,16 +9,21 @@ public class Surfer : MonoBehaviour
     public float HorizontalVelocity = 0;
     public int CurrentSegmentIndex = 0;
 
+    private Game GameComponent;
     private float PlayerVelocity = 0;
     private float PlayerHeight = 0;
 
+    public bool InAir = false;
+    public float LastTimeOnWater = 0;
     private Quaternion q = Quaternion.identity;
 
     void Update()
     {
         if (AllWaveSegmentsReference == null) return;
 
-		float _angle = transform.eulerAngles.z - 90f;
+        GameComponent = GameObject.FindObjectOfType<Game>();
+
+        float _angle = transform.eulerAngles.z - 90f;
         _angle = (_angle % 360f); if (_angle < 0) _angle += 360f;
         CurrentSegmentIndex = Mathf.RoundToInt(_angle / 360f * DiscreteWave.NUM_SEGMENTS);
         CurrentSegmentIndex = (CurrentSegmentIndex >= AllWaveSegmentsReference.Count ?
@@ -69,6 +74,18 @@ public class Surfer : MonoBehaviour
         //PlayerHeight = Mathf.Lerp( PlayerHeight, CurrentSegment.Amplitude, (heightDif > 0 ? 0.8f : 0.1f ) );
 
         PlayerHeight += PlayerVelocity;// * Time.fixedDeltaTime;
+
+
+        if ( CurrentSegment.Amplitude >= (PlayerHeight - 0.3f) )
+        {
+            InAir = false;
+            LastTimeOnWater = Time.time;
+        }
+        else
+        {
+            InAir = true;
+            GameComponent.AddStyle(1);
+        }
 
         //Debug.Log("AllWaveSegmentsReference[" + CurrentSegmentIndex + "] : " + AllWaveSegmentsReference[CurrentSegmentIndex].Amplitude);
         transform.localPosition = new Vector3(

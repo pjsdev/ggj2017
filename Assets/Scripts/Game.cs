@@ -18,9 +18,10 @@ public class Game : StateMachine
 
 	public DiscreteWave Waves;
 
+    public int totPoints = 0;
 	public void AddStyle(int _points)
 	{
-		
+        totPoints += _points;
 	}
 
 	void Start ()
