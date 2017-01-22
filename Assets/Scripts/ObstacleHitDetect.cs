@@ -14,7 +14,9 @@ public class ObstacleHitDetect : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D _coll)
 	{
-		print ("TEST");
-		Controller.Enter<Wipeout> ();
+		if (_coll.CompareTag ("Obstacle"))
+		{
+			Controller.Enter<Wipeout> ();
+		}
 	}
 }
