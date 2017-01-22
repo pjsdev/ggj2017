@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WaveSegment : MonoBehaviour
 {
+    public GameObject Splash;
+    private ParticleSystem SplashPS;
     public float Acceleration;
 	public float SmoothedAcceleration = 0;
     public float Velocity;
@@ -16,6 +18,11 @@ public class WaveSegment : MonoBehaviour
     public WaveSegment NextSegment;
 
     public float Amplitude;
+
+    void Awake()
+    {
+        SplashPS = Splash.GetComponent<ParticleSystem>();
+    }
 
     public void AddImpuse(float force)
     {
@@ -40,6 +47,11 @@ public class WaveSegment : MonoBehaviour
 
 		ImpulseVelocity *= 0.97f;
 		Amplitude += Velocity;
+
+        var e = SplashPS.emission;
+        e.enabled = (Amplitude > 0.3f);
+
+        Acceleration += Random.Range(-0.05f, 0.05f);
 	}
 
 	public void SmoothAcceleration()

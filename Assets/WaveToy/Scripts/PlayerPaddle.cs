@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerPaddle : MonoBehaviour
 {
-    public float Acceleration = 0.05f;
+    public float Acceleration = 0.2f;
     public float Decceleration = 0.001f;
 
     public int CurrentSegmentIndex = 0;
