@@ -11,6 +11,8 @@ public class PlayerController : StateMachine
 	public Color HairColor;
 	public Color SuitColor;
 		
+	public int Score = -1;
+
 	[HideInInspector]
 	public Game game;
 

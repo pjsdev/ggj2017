@@ -16,7 +16,8 @@ public class Playing : State
 	GameObject ObstacleSpawners;
 	AudioClip Music;
 
-	float CurrentTime = 15f;
+	readonly static float RoundTime = 60f;
+	float CurrentTime;
 	Text Timer;
 	Text StylePoints;
 	GameObject OuttaTime;
@@ -86,6 +87,9 @@ public class Playing : State
 			p.Enter<OnWave> ();	
 		}
 
+		game.totPoints = 0;
+
+		CurrentTime = RoundTime;
 		ObstacleSpawners.SetActive (true);
 		CentralCoral.SetActive (true);
 		OuttaTime.gameObject.SetActive (false);

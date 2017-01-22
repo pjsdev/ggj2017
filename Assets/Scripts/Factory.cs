@@ -29,7 +29,11 @@ public enum SoundEffect
 	SurfSelect3,
 	SurfSelect4,
 	SurfSelect5,
-	SurfSelect6
+	SurfSelect6,
+	ApplauseMain,
+	ApplauseTrick1,
+	ApplauseTrick2,
+	ApplauseTrick3
 }
 
 public class Factory : MonoBehaviour 
@@ -67,6 +71,10 @@ public class Factory : MonoBehaviour
 		SoundEffect.SurfSelect4,
 		SoundEffect.SurfSelect5,
 		SoundEffect.SurfSelect6,
+		SoundEffect.ApplauseMain,
+		SoundEffect.ApplauseTrick1,
+		SoundEffect.ApplauseTrick2,
+		SoundEffect.ApplauseTrick3
 	};
 
 	public List<Sprite> ReadyTexts;

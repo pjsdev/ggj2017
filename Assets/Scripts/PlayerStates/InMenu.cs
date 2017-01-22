@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using SimpleFSM;
 
@@ -16,6 +17,8 @@ public class InMenu : State
 
 	GameObject SpriteGO;
 
+	Text ScoreText;
+
 	public InMenu(PlayerController _controller, GameObject _inMenuGO)
 	{
 		Controller = _controller;
@@ -27,6 +30,13 @@ public class InMenu : State
 		SpriteGO = _inMenuGO;
 		PlayerController.SetHairAndSuitColor (SpriteGO,
 			Controller.HairColor, Controller.SuitColor);
+
+		ScoreText = SpriteGO.transform
+			.Find ("Canvas")
+			.Find ("Text")
+			.GetComponent<Text> ();
+
+		Debug.Assert (ScoreText != null);
 	}
 
 	#region State implementation
@@ -64,6 +74,16 @@ public class InMenu : State
 	{
 		SpriteGO.SetActive (true);
 		ReadyTimer = 0f;
+
+		if (Controller.Score != -1)
+		{
+			ScoreText.enabled = true;
+			ScoreText.text = Controller.Score.ToString ();
+		} 
+		else
+		{
+			ScoreText.enabled = false;
+		}
 	}
 
 	public void Exit ()

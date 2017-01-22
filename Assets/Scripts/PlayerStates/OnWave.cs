@@ -73,6 +73,8 @@ public class OnWave : State
         surfer.Stunned = false;
 
 		SpriteGO.SetActive (false);
+
+		Controller.Score = surfer.PlayerScore;
 		Object.Destroy (surfer);
 
 		Controller.transform.SetParent (null);
