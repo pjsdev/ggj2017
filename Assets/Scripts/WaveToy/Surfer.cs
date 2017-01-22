@@ -150,7 +150,7 @@ public class Surfer : MonoBehaviour
 
     void AddScore(int score)
     {
-        PlayerScore += score;
-        GameComponent.AddStyle(1);
+        PlayerScore += score * ScoreMultiplier;
+        GameComponent.AddStyle(score*ScoreMultiplier);
     }
 }
