@@ -27,7 +27,7 @@ public class WaveSegment : MonoBehaviour
     public void AddImpuse(float force)
     {
         LastImpulseTime = Time.time;
-        ImpulseVelocity += Mathf.Min( Mathf.Abs(force), 1f/PaddleManager.NUM_PLAYERS);
+		ImpulseVelocity += Mathf.Abs(force);//Mathf.Min( Mathf.Abs(force), 1f/PaddleManager.NUM_PLAYERS);
         if (ImpulseVelocity > 1f) ImpulseVelocity = 1f;
 
         Acceleration += ImpulseVelocity;

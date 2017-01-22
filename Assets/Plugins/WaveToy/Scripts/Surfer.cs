@@ -15,10 +15,12 @@ public class Surfer : MonoBehaviour
     {
         if (AllWaveSegmentsReference == null) return;
 
-        float _angle = transform.localEulerAngles.z - 90f;
+		float _angle = transform.eulerAngles.z - 90f;
         _angle = (_angle % 360f); if (_angle < 0) _angle += 360f;
         CurrentSegmentIndex = Mathf.RoundToInt(_angle / 360f * DiscreteWave.NUM_SEGMENTS);
-        CurrentSegmentIndex = (CurrentSegmentIndex >= AllWaveSegmentsReference.Count ? CurrentSegmentIndex - AllWaveSegmentsReference.Count : (CurrentSegmentIndex < 0 ? CurrentSegmentIndex + AllWaveSegmentsReference.Count : CurrentSegmentIndex));
+        CurrentSegmentIndex = (CurrentSegmentIndex >= AllWaveSegmentsReference.Count ?
+							   CurrentSegmentIndex - AllWaveSegmentsReference.Count : 
+							   (CurrentSegmentIndex < 0 ? CurrentSegmentIndex + AllWaveSegmentsReference.Count : CurrentSegmentIndex));
 
         float _sumOfNearbySegmentToLeft = 0;
         float _sumOfNearbySegmentToRight = 0;
@@ -48,11 +50,14 @@ public class Surfer : MonoBehaviour
         HorizontalVelocity = _sumOfNearbySegmentToLeft - _sumOfNearbySegmentToRight;
 
         //Debug.Log("AllWaveSegmentsReference[" + CurrentSegmentIndex + "] : " + AllWaveSegmentsReference[CurrentSegmentIndex].Amplitude);
-        transform.localPosition = new Vector3(transform.localPosition.x, AllWaveSegmentsReference[CurrentSegmentIndex].Amplitude, transform.localPosition.z);
+        transform.localPosition = new Vector3(
+			transform.localPosition.x,
+			-AllWaveSegmentsReference[CurrentSegmentIndex].Amplitude * 3f,
+			transform.localPosition.z);
 
         //Debug.Log("AllWaveSegmentsReference[" + CurrentSegmentIndex + "] HorizontalVelocity : " + HorizontalVelocity);
-        q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z + HorizontalVelocity*2f);
-        transform.localRotation = q;
+        // q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z + HorizontalVelocity*2f);
+        // transform.localRotation = q;
 		// transform.GetChild (3).transform.localRotation = q;
     }
 

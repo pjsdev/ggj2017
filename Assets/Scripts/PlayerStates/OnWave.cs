@@ -48,6 +48,13 @@ public class OnWave : State
 		surfer.AllWaveSegmentsReference = Paddle.AllWaveSegmentsReference;
 
 		Controller.transform.position = Vector3.zero;
+
+		Controller.transform.localRotation = Quaternion.Euler (new Vector3 (0, 0, -180f));
+		Controller.transform.SetParent (Paddle.transform, true);
+
+		var surfers = GameObject.FindObjectsOfType<Surfer> ();
+		Paddle.CurrentAngle = 90f * surfers.Length;
+		Paddle.Renderer.color = Controller.SuitColor;
 	}
 
 	public void Exit ()
