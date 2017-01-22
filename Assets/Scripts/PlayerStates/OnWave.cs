@@ -16,7 +16,7 @@ public class OnWave : State
 
 	public void HitObstacle()
 	{
-		
+        surfer.ObstacleHit();
 	}
 
 	public OnWave(PlayerController _controller, GameObject _onWaveGO)
@@ -31,15 +31,18 @@ public class OnWave : State
 
 	public void Update ()
 	{
-		if (Input.GetKey(Controller.KeyOne))
-		{
-			Paddle.MoveClockwise();
-		}
-		if (Input.GetKey(Controller.KeyTwo))
-		{
-			Paddle.MoveAntiClockwise();
-		}
-	}
+        if ( !surfer.Stunned )
+        {
+            if (Input.GetKey(Controller.KeyOne))
+            {
+                Paddle.MoveClockwise();
+            }
+            if (Input.GetKey(Controller.KeyTwo))
+            {
+                Paddle.MoveAntiClockwise();
+            }
+        }
+    }
 
 	public void Enter ()
 	{
@@ -67,6 +70,8 @@ public class OnWave : State
 
 	public void Exit ()
 	{
+        surfer.Stunned = false;
+
 		SpriteGO.SetActive (false);
 		Object.Destroy (surfer);
 
