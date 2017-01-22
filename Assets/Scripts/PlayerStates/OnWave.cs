@@ -14,6 +14,11 @@ public class OnWave : State
 
 	Vector3 OldPos;
 
+	public void HitObstacle()
+	{
+		
+	}
+
 	public OnWave(PlayerController _controller, GameObject _onWaveGO)
 	{
 		Controller = _controller;

@@ -39,14 +39,6 @@ public class Playing : State
 		{
 			yield return null;
 
-			// check game over
-			var activePlayers = game.Players.Where (p => p.CurrentState () != typeof(Wipeout));
-			if (activePlayers.Count () == 0)
-			{
-				Debug.LogWarning ("Game Over wipedout");
-				break;
-			}
-
 			// update timer if we are still playing
 			CurrentTime -= Time.deltaTime;
 			Timer.text = Mathf.CeilToInt (CurrentTime).ToString ();

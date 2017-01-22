@@ -15,7 +15,12 @@ namespace SimpleFSM
 	{
 		State Current;
 
-		public System.Type CurrentState()
+		public State CurrentState()
+		{
+			return Current;
+		}
+
+		public System.Type CurrentStateType()
 		{
 			return Current.GetType();
 		}

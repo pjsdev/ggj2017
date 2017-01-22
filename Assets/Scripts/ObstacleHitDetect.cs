@@ -16,7 +16,7 @@ public class ObstacleHitDetect : MonoBehaviour
 	{
 		if (_coll.CompareTag ("Obstacle"))
 		{
-			Controller.Enter<Wipeout> ();
+			(Controller.CurrentState () as OnWave).HitObstacle ();
 		}
 	}
 }

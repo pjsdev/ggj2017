@@ -81,7 +81,7 @@ public class CharacterSelect : State
 	public void Update ()
 	{
 		if (game.Players.Count > 0 &&
-			game.Players.All (p => p.CurrentState () == typeof(InMenuReady)))
+			game.Players.All (p => p.CurrentStateType () == typeof(InMenuReady)))
 		{
 			// Debug.Log ("All Players Ready...");
 			CountdownPanel.SetActive (true);
