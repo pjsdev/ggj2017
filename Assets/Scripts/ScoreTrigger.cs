@@ -12,6 +12,7 @@ public class ScoreTrigger : MonoBehaviour
     public float FadeInDuration = 0.2f;
     public float FadeOutDuration = 0.2f;
     public Text TextPrefab;
+    public GameObject TextCanvas;
 
     private string PlayerTag = "Player";
     private List<Text> ScoreTextFields = new List<Text>();
@@ -29,6 +30,11 @@ public class ScoreTrigger : MonoBehaviour
     public void ShowScore(int _Score, Color colour)
     {
         Text txt = GetTextField();
+        txt.transform.position = transform.position;
+        txt.transform.rotation = transform.rotation;
+        txt.transform.SetParent(TextCanvas.transform, true);
+        txt.transform.localScale = Vector3.one;
+
         txt.text = _Score.ToString();
         txt.color = new Color( colour.r, colour.g, colour.b, 0);
         txt.DOFade(1f, FadeInDuration);
