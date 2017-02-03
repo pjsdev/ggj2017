@@ -43,7 +43,7 @@ public class Playing : State
 
 	IEnumerator CheckGameOver()
 	{
-		while (true)
+		while (game.CurrentStateType() == typeof(Playing))
 		{
 			yield return null;
 
@@ -116,7 +116,6 @@ public class Playing : State
 
 	public void Exit ()
 	{
-		game.StopCoroutine("CheckGameOver");	
 		game.Waves.gameObject.SetActive (false);
 		CentralCoral.SetActive (false);
 		GameUI.SetActive (false);
