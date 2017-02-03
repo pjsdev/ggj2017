@@ -30,16 +30,17 @@ public class ScoreTrigger : MonoBehaviour
     public void ShowScore(int _Score, Color colour)
     {
         Text txt = GetTextField();
-        txt.transform.position = transform.position;
-        txt.transform.rotation = transform.rotation;
-        txt.transform.SetParent(TextCanvas.transform, true);
+        txt.transform.SetParent(TextCanvas.transform, false);
         txt.transform.localScale = Vector3.one;
+        txt.transform.position = Camera.main.WorldToScreenPoint( transform.position );
+        txt.transform.rotation = transform.rotation;
 
         txt.text = _Score.ToString();
         txt.color = new Color( colour.r, colour.g, colour.b, 0);
         txt.DOFade(1f, FadeInDuration);
         txt.DOFade(0f, FadeOutDuration).SetDelay(ShowScoreDuration);
-        txt.transform.DOLocalMoveY(txt.transform.position.y - 1f, FadeInDuration + FadeOutDuration + ShowScoreDuration);
+        //txt.transform.DOLocalMoveY(txt.transform.position.y + 0.1f, FadeInDuration + FadeOutDuration + ShowScoreDuration);
+        txt.transform.DOScale(1.1f, FadeInDuration + FadeOutDuration + ShowScoreDuration);
     }
 
     // Checks pool for available textfield - creates one if needed
