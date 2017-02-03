@@ -17,6 +17,21 @@ public class InMenu : State
 	GameObject SpriteGO;
 
 	Text ScoreText;
+	Text KeysText;
+
+	static Text MakeText(GameObject _textCanvas, string _data, Vector3 _base, Vector3 _offset)
+	{
+		GameObject textGo = GameObject.Instantiate(Resources.Load("ScoreText")) as GameObject;
+		Text ScoreText = textGo.GetComponent<Text>();
+		ScoreText.text = _data;
+        ScoreText.transform.SetParent(_textCanvas.transform, false);
+        ScoreText.transform.position = Camera.main.WorldToScreenPoint(
+			_base - _offset);
+
+		ScoreText.transform.localScale = Vector3.one;
+		ScoreText.color = Color.white;	
+		return ScoreText;
+	}
 
 	public InMenu(PlayerController _controller, GameObject _inMenuGO)
 	{
@@ -27,12 +42,12 @@ public class InMenu : State
 		SpriteGO = _inMenuGO;
 		PlayerController.SetSuitColor (SpriteGO, Controller.SuitColor);
 
-		ScoreText = SpriteGO.transform
-			.Find ("Canvas")
-			.Find ("Text")
-			.GetComponent<Text> ();
+		GameObject TextCanvas = GameObject.FindGameObjectWithTag("MainCanvas");
+		ScoreText = MakeText(TextCanvas, "0", SpriteGO.transform.position, Vector3.one * 2);
+		KeysText = MakeText(
+			TextCanvas, string.Format("{0} - {1}", Controller.KeyOne, Controller.KeyTwo), 
+			SpriteGO.transform.position, Vector3.one);
 
-		Debug.Assert (ScoreText != null);
 	}
 
 	#region State implementation
@@ -68,6 +83,7 @@ public class InMenu : State
 	{
 		SpriteGO.SetActive (true);
 		ReadyTimer = 0f;
+		KeysText.enabled = true;
 
 		if (Controller.Score != 0)
 		{
@@ -82,6 +98,8 @@ public class InMenu : State
 
 	public void Exit ()
 	{
+		KeysText.enabled = false;
+		ScoreText.enabled = false;
 		SpriteGO.SetActive (false);
 	}
 
