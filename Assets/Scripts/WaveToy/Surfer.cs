@@ -12,7 +12,6 @@ public class Surfer : MonoBehaviour
     private int MAX_SCORE_MULTIPLIER = 4;
     private float TIME_TO_INCREASE_MULTIPLIER = 5f;
     public int ScoreMultiplier = 1;
-    public int PlayerScore = 0;
     public float TimeIncreasedMultiplier = 0;
 
     private Game GameComponent;
@@ -162,7 +161,8 @@ public class Surfer : MonoBehaviour
 
     void AddScore(int score)
     {
-        PlayerScore += score * ScoreMultiplier;
+        Controller.Score += score * ScoreMultiplier;
+        //PlayerScore += score * ScoreMultiplier;
         GameComponent.AddStyle(score*ScoreMultiplier);
     }
 }
