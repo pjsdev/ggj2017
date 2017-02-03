@@ -8,20 +8,31 @@ public class PlayerController : StateMachine
 {	
 	public string KeyOne;
 	public string KeyTwo;
-	public Color HairColor;
 	public Color SuitColor;
 		
-	public int Score = -1;
+	int ScoreInternal = 0;
+	public int Score {
+		get { return ScoreInternal; }
+		set
+		{
+			int diff = value - ScoreInternal;
+			ScoreInternal = System.Math.Max(0, value);
+			game.TeamScores[TeamIndex] = System.Math.Max(0, diff + game.TeamScores[TeamIndex]);
+			game.TotalScore = System.Math.Max(0, diff + game.TotalScore);
+		}
+	}
+
+	public int TeamIndex = -1;
 
 	[HideInInspector]
 	public Game game;
 
-	public static void SetHairAndSuitColor(GameObject _root, Color _hair, Color _suit)
+	public static void SetSuitColor(GameObject _root, Color _suit)
 	{
 		var hair = _root.transform.Find ("Hair");
 		var suit = _root.transform.Find ("Suit");
 
-		hair.GetComponent<SpriteRenderer> ().color = _hair;
+		hair.GetComponent<SpriteRenderer> ().color = _suit;
 		suit.GetComponent<SpriteRenderer> ().color = _suit;
 	}
 

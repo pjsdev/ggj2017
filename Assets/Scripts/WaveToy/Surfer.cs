@@ -163,6 +163,6 @@ public class Surfer : MonoBehaviour
     {
         Controller.Score += score * ScoreMultiplier;
         //PlayerScore += score * ScoreMultiplier;
-        GameComponent.AddStyle(score*ScoreMultiplier);
+        //GameComponent.AddStyle(score*ScoreMultiplier);
     }
 }

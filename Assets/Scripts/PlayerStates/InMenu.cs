@@ -8,7 +8,6 @@ using SimpleFSM;
 public class InMenu : State 
 {
 	static readonly float ReadyTimerTheshold = 1f;
-	ColorIterator HairColors;
 	ColorIterator SuitColors;
 
 	PlayerController Controller;
@@ -22,14 +21,11 @@ public class InMenu : State
 	public InMenu(PlayerController _controller, GameObject _inMenuGO)
 	{
 		Controller = _controller;
-		HairColors = new ColorIterator ();
 		SuitColors = new ColorIterator ();
-		Controller.HairColor = HairColors.NextColor();
 		Controller.SuitColor = SuitColors.NextColor();
 
 		SpriteGO = _inMenuGO;
-		PlayerController.SetHairAndSuitColor (SpriteGO,
-			Controller.HairColor, Controller.SuitColor);
+		PlayerController.SetSuitColor (SpriteGO, Controller.SuitColor);
 
 		ScoreText = SpriteGO.transform
 			.Find ("Canvas")
@@ -57,16 +53,14 @@ public class InMenu : State
 
 		if (Input.GetKeyUp (Controller.KeyOne))
 		{
-			Controller.HairColor = HairColors.NextColor();
-			PlayerController.SetHairAndSuitColor (SpriteGO,
-				Controller.HairColor, Controller.SuitColor);
+			Controller.SuitColor = SuitColors.PreviousColor();
+			PlayerController.SetSuitColor (SpriteGO, Controller.SuitColor);
 		}
 
 		if (Input.GetKeyUp (Controller.KeyTwo))
 		{
 			Controller.SuitColor = SuitColors.NextColor();
-			PlayerController.SetHairAndSuitColor (SpriteGO,
-				Controller.HairColor, Controller.SuitColor);
+			PlayerController.SetSuitColor (SpriteGO, Controller.SuitColor);	
 		}
 	}
 
@@ -75,7 +69,7 @@ public class InMenu : State
 		SpriteGO.SetActive (true);
 		ReadyTimer = 0f;
 
-		if (Controller.Score != -1)
+		if (Controller.Score != 0)
 		{
 			ScoreText.enabled = true;
 			ScoreText.text = Controller.Score.ToString ();

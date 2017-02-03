@@ -38,8 +38,7 @@ public class InMenuReady : State
 	{
 		SpriteGO.SetActive (true);
 
-		PlayerController.SetHairAndSuitColor (SpriteGO,
-			Controller.HairColor, Controller.SuitColor);
+		PlayerController.SetSuitColor (SpriteGO, Controller.SuitColor);
 
 		Ready.sprite = Controller.game.factory.RandomReadyText ();
 		Ready.enabled = true;

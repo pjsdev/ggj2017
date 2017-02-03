@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class ColorIterator
 {
-	readonly static Color[] Colors = new Color[]{
+	public static int IndexOf(Color _color)
+	{
+		return System.Array.IndexOf(Colors, _color);	
+	}
+
+	public readonly static Color[] Colors = new Color[]{
 		
 		new Color(255 / 255.0f, 0 / 255.0f, 0 / 255.0f),
 		new Color(0 / 255.0f, 255 / 255.0f, 0 / 255.0f),
@@ -21,6 +26,17 @@ public class ColorIterator
 	public ColorIterator()
 	{
 		Current = Random.Range (0, Colors.Length);
+	}
+
+	public Color PreviousColor()
+	{
+		// about to go out of range, circle back
+		if (Current == 0)
+			Current = Colors.Length - 1;
+		else
+			Current--;
+
+		return Colors[Current];
 	}
 
 	public Color NextColor()

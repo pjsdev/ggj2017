@@ -21,11 +21,8 @@ public class Game : StateMachine
 
 	public DiscreteWave Waves;
 
-    public int totPoints = 0;
-	public void AddStyle(int _points)
-	{
-        totPoints += _points;
-	}
+	public List<int> TeamScores;
+	public int TotalScore = 0;
 
 	void Start ()
 	{

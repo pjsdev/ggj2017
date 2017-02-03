@@ -16,7 +16,7 @@ public class Playing : State
 	GameObject ObstacleSpawners;
 	AudioClip Music;
 
-	readonly static float RoundTime = 60f;
+	readonly static float RoundTime = 10f;
 	float CurrentTime;
 	Text Timer;
 	Text StylePoints;
@@ -47,7 +47,7 @@ public class Playing : State
 		{
 			yield return null;
 
-			StylePoints.text = "StyLe - " + game.totPoints.ToString ();
+			StylePoints.text = "StyLe - " + game.TotalScore.ToString ();
 
 			// update timer if we are still playing
 			CurrentTime -= Time.deltaTime;
@@ -82,12 +82,17 @@ public class Playing : State
 	{
 		game.Waves.gameObject.SetActive (true);
 
+		// init all scoring metrics to 0
+		game.TeamScores = new List<int>(ColorIterator.Colors.Select(x=>0));
+		Debug.Assert(game.TeamScores.Count == ColorIterator.Colors.Length);
+		game.TotalScore = 0;
+
 		foreach (PlayerController p in game.Players)
 		{
+			p.TeamIndex = ColorIterator.IndexOf(p.SuitColor);
 			p.Enter<OnWave> ();	
 		}
 
-		game.totPoints = 0;
 
 		CurrentTime = RoundTime;
 		ObstacleSpawners.SetActive (true);
@@ -102,6 +107,14 @@ public class Playing : State
 
 	public void Exit ()
 	{
+		Debug.Log(game.TotalScore);
+
+		foreach(int i in game.TeamScores)
+			Debug.LogFormat("--- {0}", i.ToString());
+
+		foreach(var pc in game.Players)
+			Debug.LogFormat("... {0}", pc.Score.ToString());
+
 		game.Waves.gameObject.SetActive (false);
 		CentralCoral.SetActive (false);
 		GameUI.SetActive (false);

@@ -67,8 +67,9 @@ public class OnWave : State
 	{
 		SpriteGO.SetActive (true);
 
-		PlayerController.SetHairAndSuitColor (SpriteGO,
-			Controller.HairColor, Controller.SuitColor);
+		Controller.Score = 0;
+
+		PlayerController.SetSuitColor (SpriteGO, Controller.SuitColor);
 
 		Paddle = Controller.game.factory.CreatePaddle ();
 		Paddle.AllWaveSegmentsReference = Controller.game.Waves.GetWaveSegments ();
