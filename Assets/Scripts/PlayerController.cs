@@ -11,10 +11,12 @@ public class PlayerController : StateMachine
 	public Color SuitColor;
 		
 	int ScoreInternal = 0;
-	public int Score {
+	public int Score 
+	{
 		get { return ScoreInternal; }
 		set
 		{
+			if (game.IsGameOver) return;
 			int diff = value - ScoreInternal;
 			ScoreInternal = System.Math.Max(0, value);
 			game.TeamScores[TeamIndex] = System.Math.Max(0, diff + game.TeamScores[TeamIndex]);

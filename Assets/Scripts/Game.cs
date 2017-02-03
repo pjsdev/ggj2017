@@ -24,6 +24,8 @@ public class Game : StateMachine
 	public List<int> TeamScores;
 	public int TotalScore = 0;
 
+	public bool IsGameOver = false;
+
 	void Start ()
 	{
 		Waves = GameObject.FindObjectOfType<DiscreteWave> ();
