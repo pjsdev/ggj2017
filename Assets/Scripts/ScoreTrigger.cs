@@ -14,9 +14,17 @@ public class ScoreTrigger : MonoBehaviour
     public Text TextPrefab;
     public GameObject TextCanvas;
 
+    private Vector3 RotationComponents = new Vector3(1f,0f,1f);
     private string PlayerTag = "Player";
-    private List<Text> ScoreTextFields = new List<Text>();
+    static private List<Text> ScoreTextFields = new List<Text>();
 
+    void Awake()
+    {
+        RotationComponents.x = -Mathf.Sin(transform.localEulerAngles.z * Mathf.Deg2Rad);
+        RotationComponents.y = Mathf.Cos(transform.localEulerAngles.z * Mathf.Deg2Rad);
+        RotationComponents = RotationComponents.normalized;
+        Debug.Log(transform.name + " For rotation " + transform.localEulerAngles.z + " Components are: " + RotationComponents );
+    }
     void OnTriggerEnter2D(Collider2D col)
     {
         if ( col.gameObject.CompareTag(PlayerTag))
@@ -30,8 +38,6 @@ public class ScoreTrigger : MonoBehaviour
     public void ShowScore(int _Score, Color colour)
     {
         Text txt = GetTextField();
-        txt.transform.SetParent(TextCanvas.transform, false);
-        txt.transform.localScale = Vector3.one;
         txt.transform.position = Camera.main.WorldToScreenPoint( transform.position );
         txt.transform.rotation = transform.rotation;
 
@@ -40,7 +46,9 @@ public class ScoreTrigger : MonoBehaviour
         txt.DOFade(1f, FadeInDuration);
         txt.DOFade(0f, FadeOutDuration).SetDelay(ShowScoreDuration);
         //txt.transform.DOLocalMoveY(txt.transform.position.y + 0.1f, FadeInDuration + FadeOutDuration + ShowScoreDuration);
-        txt.transform.DOScale(1.1f, FadeInDuration + FadeOutDuration + ShowScoreDuration);
+        txt.transform.DOMove(Camera.main.WorldToScreenPoint(transform.position + RotationComponents * 0.8f), FadeInDuration + FadeOutDuration + ShowScoreDuration);
+        //txt.transform.DOLocalMoveY(txt.transform.position.y + RotationComponents.x * 0.1f, FadeInDuration + FadeOutDuration + ShowScoreDuration);
+        //txt.transform.DOScale(1.2f, FadeInDuration + FadeOutDuration + ShowScoreDuration);
     }
 
     // Checks pool for available textfield - creates one if needed
@@ -62,6 +70,8 @@ public class ScoreTrigger : MonoBehaviour
         {
             txt = GameObject.Instantiate(TextPrefab.gameObject).GetComponent<Text>();
             ScoreTextFields.Add(txt);
+            txt.transform.SetParent(TextCanvas.transform, false);
+            txt.transform.localScale = Vector3.one;
         }
 
         return txt;
