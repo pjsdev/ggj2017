@@ -50,26 +50,34 @@ public class Playing : State
 			StylePoints.text = "StyLe - " + game.TotalScore.ToString ();
 
 			// update timer if we are still playing
-			CurrentTime -= Time.deltaTime;
-			Timer.text = Mathf.CeilToInt (CurrentTime).ToString ();
 
-			if (CurrentTime < 0 && !game.IsGameOver)
+			if (CurrentTime < 0)
 			{
-				Debug.LogWarning ("Game Over Time out");
-				OuttaTime.SetActive (true);
-				OuttaTime.transform.DOScale (2.5f, 1f)
-					.SetLoops(2, LoopType.Yoyo)
-					.SetEase(Ease.OutElastic)
-					.OnComplete(()=>{
-						foreach (PlayerController p in game.Players)
-						{
-							p.Enter<InMenu> ();	
-						}
+				if(!game.IsGameOver)
+				{
+					Debug.LogWarning ("Game Over Time out");
+					OuttaTime.SetActive (true);
+					OuttaTime.transform.DOScale (2.5f, 1f)
+						.SetLoops(2, LoopType.Yoyo)
+						.SetEase(Ease.OutElastic)
+						.OnComplete(()=>{
+							foreach (PlayerController p in game.Players)
+							{
+								p.Enter<InMenu> ();	
+							}
 
-						game.Enter<CharacterSelect> ();					
-					});
+							game.Enter<CharacterSelect> ();					
+						});
 
-				game.IsGameOver = true;
+					game.IsGameOver = true;		
+				}
+			
+
+			} 
+			else 
+			{
+				CurrentTime -= Time.deltaTime;
+				Timer.text = Mathf.CeilToInt (CurrentTime).ToString ();
 			}
 		}
 	}

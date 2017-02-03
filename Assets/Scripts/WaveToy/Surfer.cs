@@ -46,7 +46,7 @@ public class Surfer : MonoBehaviour
 
         if ( Stunned )
         {
-            q.eulerAngles = new Vector3(0, 0, Mathf.Lerp( q.eulerAngles.z, 180f, 0.3f) );
+			q.eulerAngles = new Vector3(0, 0, Mathf.Lerp( q.eulerAngles.z * Time.deltaTime * 40f, 180f, 0.3f) );
             if (Time.time - TimeStunned > STUN_TIME) Stunned = false;
             TimeIncreasedMultiplier = Time.time;
         }

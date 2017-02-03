@@ -8,7 +8,7 @@ public class ObstacleHitDetect : MonoBehaviour
 
 	void Start()
 	{
-		Controller = transform.parent.GetComponent<PlayerController> ();
+		Controller = GetComponentInParent<PlayerController> ();
 		Debug.Assert (Controller != null);
 	}
 

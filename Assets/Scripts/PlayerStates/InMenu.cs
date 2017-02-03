@@ -45,7 +45,7 @@ public class InMenu : State
 		GameObject TextCanvas = GameObject.FindGameObjectWithTag("MainCanvas");
 		ScoreText = MakeText(
 			TextCanvas, "0", SpriteGO.transform.position,
-			new Vector3(0, -200f, 0), 2, Color.white);
+			new Vector3(0, -250f, 0), 2, Color.white);
 
 		GameObject textGo = GameObject.Instantiate(Resources.Load("KeysUI")) as GameObject;
 		KeysUI = textGo.transform;

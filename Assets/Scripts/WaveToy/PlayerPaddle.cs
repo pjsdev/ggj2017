@@ -72,7 +72,7 @@ public class PlayerPaddle : MonoBehaviour
     {
         TimeSinceMove = Time.time - LastMoveTime;
         PreviousFrameAngle = CurrentAngle;
-        CurrentAngle += Velocity;
+		CurrentAngle += Velocity * Time.deltaTime * 40f;
 
         if (Mathf.Abs(Velocity) > MAX_VELOCITY)
 			Velocity = Mathf.Sign(Velocity) * MAX_VELOCITY;
