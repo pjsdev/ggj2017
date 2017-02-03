@@ -144,7 +144,6 @@ public class Surfer : MonoBehaviour
         if (Mathf.Abs(SpinAngle) > 300f) Spins++;
         transform.GetChild(3).transform.localRotation = q;
 
-        Debug.Log("SpinAngle:" + SpinAngle + ", spins: " + Spins);
         if ( Spins > 0 )
         {
             AddScore(1000);

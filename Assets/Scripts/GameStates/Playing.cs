@@ -53,25 +53,25 @@ public class Playing : State
 			CurrentTime -= Time.deltaTime;
 			Timer.text = Mathf.CeilToInt (CurrentTime).ToString ();
 
-			if (CurrentTime < 0)
+			if (CurrentTime < 0 && !game.IsGameOver)
 			{
 				Debug.LogWarning ("Game Over Time out");
 				OuttaTime.SetActive (true);
 				OuttaTime.transform.DOScale (2.5f, 1f)
 					.SetLoops(2, LoopType.Yoyo)
-					.SetEase(Ease.OutElastic);
+					.SetEase(Ease.OutElastic)
+					.OnComplete(()=>{
+						foreach (PlayerController p in game.Players)
+						{
+							p.Enter<InMenu> ();	
+						}
 
-				break;
+						game.Enter<CharacterSelect> ();					
+					});
+
+				game.IsGameOver = true;
 			}
 		}
-
-		yield return new WaitForSeconds (5f);
-		foreach (PlayerController p in game.Players)
-		{
-			p.Enter<InMenu> ();	
-		}
-
-		game.Enter<CharacterSelect> ();
 	}
 
 	#region State implementation
@@ -80,6 +80,7 @@ public class Playing : State
 
 	public void Enter ()
 	{
+		game.IsGameOver = false;
 		game.Waves.gameObject.SetActive (true);
 
 		// init all scoring metrics to 0
@@ -107,14 +108,7 @@ public class Playing : State
 
 	public void Exit ()
 	{
-		Debug.Log(game.TotalScore);
-
-		foreach(int i in game.TeamScores)
-			Debug.LogFormat("--- {0}", i.ToString());
-
-		foreach(var pc in game.Players)
-			Debug.LogFormat("... {0}", pc.Score.ToString());
-
+		game.StopCoroutine("CheckGameOver");	
 		game.Waves.gameObject.SetActive (false);
 		CentralCoral.SetActive (false);
 		GameUI.SetActive (false);
