@@ -9,6 +9,7 @@ public class OnWave : State
 {
     GameObject SpriteGO;
     GameObject ScoreMultiplierCanvas;
+    GameObject ScorePlacement;
     GameObject Surfboard;
     Vector3 ReverseSpriteVec = new Vector3(1f, -1f, 1f);
     PlayerController Controller;
@@ -28,6 +29,7 @@ public class OnWave : State
 		Controller = _controller;
 		SpriteGO = _onWaveGO;
 
+        ScorePlacement = SpriteGO.transform.FindChild("ScorePlacement").gameObject;
         ScoreMultiplierCanvas = SpriteGO.transform.FindChild("MultiplierCanvas").gameObject;
         Surfboard = SpriteGO.transform.FindChild("Surfboard 2").gameObject;
 
@@ -77,8 +79,9 @@ public class OnWave : State
 		surfer = Controller.gameObject.AddComponent<Surfer> ();
 		surfer.AllWaveSegmentsReference = Paddle.AllWaveSegmentsReference;
 		surfer.Controller = Controller;
+        surfer.ScoreTransform = ScorePlacement.transform;
 
-		OldPos = Controller.transform.position;
+        OldPos = Controller.transform.position;
 		Controller.transform.position = Vector3.zero;
 
 		Controller.transform.SetParent (Paddle.transform, true);

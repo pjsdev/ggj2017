@@ -28,7 +28,9 @@ public class Surfer : MonoBehaviour
     public float LastTimeOnWater = 0;
     private Quaternion q = Quaternion.identity;
 
-	public PlayerController Controller;
+    public Transform ScoreTransform;
+
+    public PlayerController Controller;
 
     private ScoreTrigger PlayerScoreTrigger;
 
@@ -138,24 +140,27 @@ public class Surfer : MonoBehaviour
 
                 if (Input.GetKey(Controller.KeyOne))
                 {
-                    SpinAngle += 10f;
-                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z + 10f);
+                    SpinAngle += 13f;
+                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z + 13f);
                 }
                 if (Input.GetKey(Controller.KeyTwo))
                 {
-                    SpinAngle -= 10f;
-                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z - 10f);
+                    SpinAngle -= 13f;
+                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z - 13f);
                 }
             }
         }
-        if (Mathf.Abs(SpinAngle) > 300f) Spins++;
+        if (Mathf.Abs(SpinAngle) > 300f)
+        {
+            Spins++;
+        }
         transform.GetChild(3).transform.localRotation = q;
 
         if ( Spins > 0 )
         {
             //PlayerScoreTrigger.transform.position = transform.position;
             //PlayerScoreTrigger.transform.rotation = transform.rotation;
-            PlayerScoreTrigger.ShowScore(1000,Controller.SuitColor);
+            PlayerScoreTrigger.ShowScore(1000,Controller.SuitColor, ScoreTransform.position);
             AddScore(1000);
             Spins = 0;
             SpinAngle = 0;
