@@ -30,6 +30,13 @@ public class Surfer : MonoBehaviour
 
 	public PlayerController Controller;
 
+    private ScoreTrigger PlayerScoreTrigger;
+
+    void Awake()
+    {
+        PlayerScoreTrigger = GetComponentInParent<ScoreTrigger>();
+    }
+
     public void ObstacleHit()
     {
         PlayerVelocity = 0;
@@ -146,6 +153,9 @@ public class Surfer : MonoBehaviour
 
         if ( Spins > 0 )
         {
+            //PlayerScoreTrigger.transform.position = transform.position;
+            //PlayerScoreTrigger.transform.rotation = transform.rotation;
+            PlayerScoreTrigger.ShowScore(1000,Controller.SuitColor);
             AddScore(1000);
             Spins = 0;
             SpinAngle = 0;

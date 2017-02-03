@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Collider2D))]
 public class ScoreTrigger : MonoBehaviour
 {
     public int Score = 100;
@@ -20,6 +19,7 @@ public class ScoreTrigger : MonoBehaviour
 
     void Awake()
     {
+        if (TextCanvas == null) TextCanvas = GameObject.FindGameObjectWithTag("MainCanvas");
         RotationComponents.x = -Mathf.Sin(transform.localEulerAngles.z * Mathf.Deg2Rad);
         RotationComponents.y = Mathf.Cos(transform.localEulerAngles.z * Mathf.Deg2Rad);
         RotationComponents = RotationComponents.normalized;
