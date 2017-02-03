@@ -17,19 +17,19 @@ public class InMenu : State
 	GameObject SpriteGO;
 
 	Text ScoreText;
-	Text KeysText;
+	Transform KeysUI;
 
-	static Text MakeText(GameObject _textCanvas, string _data, Vector3 _base, Vector3 _offset)
+	static Text MakeText(GameObject _textCanvas, string _data, Vector3 _base,
+		Vector3 _offset, float _size, Color _col)
 	{
 		GameObject textGo = GameObject.Instantiate(Resources.Load("ScoreText")) as GameObject;
 		Text ScoreText = textGo.GetComponent<Text>();
 		ScoreText.text = _data;
         ScoreText.transform.SetParent(_textCanvas.transform, false);
-        ScoreText.transform.position = Camera.main.WorldToScreenPoint(
-			_base - _offset);
+		ScoreText.transform.position = Camera.main.WorldToScreenPoint(_base) + _offset;
 
-		ScoreText.transform.localScale = Vector3.one;
-		ScoreText.color = Color.white;	
+		ScoreText.transform.localScale = Vector3.one * _size;
+		ScoreText.color = _col;	
 		return ScoreText;
 	}
 
@@ -43,11 +43,17 @@ public class InMenu : State
 		PlayerController.SetSuitColor (SpriteGO, Controller.SuitColor);
 
 		GameObject TextCanvas = GameObject.FindGameObjectWithTag("MainCanvas");
-		ScoreText = MakeText(TextCanvas, "0", SpriteGO.transform.position, Vector3.one * 2);
-		KeysText = MakeText(
-			TextCanvas, string.Format("{0} - {1}", Controller.KeyOne, Controller.KeyTwo), 
-			SpriteGO.transform.position, Vector3.one);
+		ScoreText = MakeText(
+			TextCanvas, "0", SpriteGO.transform.position,
+			new Vector3(0, -200f, 0), 2, Color.white);
 
+		GameObject textGo = GameObject.Instantiate(Resources.Load("KeysUI")) as GameObject;
+		KeysUI = textGo.transform;
+			
+		KeysUI.Find("KeyOne").GetChild(0).GetComponent<Text>().text = Controller.KeyOne.ToUpper();
+		KeysUI.Find("KeyTwo").GetChild(0).GetComponent<Text>().text = Controller.KeyTwo.ToUpper();
+		KeysUI.transform.SetParent(TextCanvas.transform, false);
+		KeysUI.transform.position = Camera.main.WorldToScreenPoint(SpriteGO.transform.position) + new Vector3(0, -140f, 0);
 	}
 
 	#region State implementation
@@ -83,7 +89,7 @@ public class InMenu : State
 	{
 		SpriteGO.SetActive (true);
 		ReadyTimer = 0f;
-		KeysText.enabled = true;
+		KeysUI.gameObject.SetActive(true);
 
 		if (Controller.Score != 0)
 		{
@@ -98,7 +104,7 @@ public class InMenu : State
 
 	public void Exit ()
 	{
-		KeysText.enabled = false;
+		KeysUI.gameObject.SetActive(false);
 		ScoreText.enabled = false;
 		SpriteGO.SetActive (false);
 	}
