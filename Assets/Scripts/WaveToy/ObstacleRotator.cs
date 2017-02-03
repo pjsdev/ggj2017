@@ -6,6 +6,7 @@ public class ObstacleRotator : MonoBehaviour
 {
     public float RotateRate = 1f;
     private Vector3 CurrentRotation = Vector3.zero;
+	public float Speed = 50f;
 
     void Awake()
     {
@@ -14,8 +15,8 @@ public class ObstacleRotator : MonoBehaviour
     }
     void Update()
     {
-        CurrentRotation.z += RotateRate;
-        transform.localEulerAngles = CurrentRotation;
+		CurrentRotation.z += RotateRate * Time.deltaTime * Speed;
+		transform.localEulerAngles = CurrentRotation;
     }
 
 }
