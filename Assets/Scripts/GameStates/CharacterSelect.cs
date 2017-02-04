@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using SimpleFSM;
+using System;
 
 public class CharacterSelect : State 
 {
@@ -12,13 +13,14 @@ public class CharacterSelect : State
 
 	public class KeyData 
 	{
-		public string KeyOne;
-		public string KeyTwo;
+		public KeyCode KeyOne;
+		public KeyCode KeyTwo;
 	}
 
-	List<char> AlreadyUsedKeys;
+	List<KeyCode> AlreadyUsedKeys;
+    protected List<KeyCode> AllPossibleKeys = new List<KeyCode>();
 
-	KeyData CurrentlyJoining = null;
+    KeyData CurrentlyJoining = null;
 
 	Game game;
 
@@ -35,9 +37,14 @@ public class CharacterSelect : State
 
 	public CharacterSelect (Game _game)
 	{
-		AlreadyUsedKeys = new List<char> ();
+		AlreadyUsedKeys = new List<KeyCode>();
 
-		game = _game;
+        AllPossibleKeys.AddRange((KeyCode[])Enum.GetValues(typeof(KeyCode)));
+        AllPossibleKeys.Remove(KeyCode.Space);
+        AllPossibleKeys.Remove(KeyCode.Escape);
+        AllPossibleKeys.Remove(KeyCode.None);
+
+        game = _game;
 		CharacterSelectUI = GameObject.FindGameObjectWithTag ("CharacterSelectUI");
 		Debug.Assert (CharacterSelectUI != null);
 
@@ -102,8 +109,9 @@ public class CharacterSelect : State
 
 		if (Input.anyKeyDown)
 		{
-			// filter out already used keys
-			char[] _candidateKeys = Input.inputString
+            // filter out already used keys
+            /*
+            char[] _candidateKeys = Input.inputString
 				.Where (c => !AlreadyUsedKeys.Contains(c))
 				.ToArray();
 
@@ -113,13 +121,28 @@ public class CharacterSelect : State
 			char _candidateKey = _candidateKeys [0];
 			AlreadyUsedKeys.Add (_candidateKey);
 			Debug.LogFormat ("Candidate key is: {0}", _candidateKey);
+            */
 
-			// if this is a new player
-			if (CurrentlyJoining == null)
+
+            // TW I know checking every key seems a little dumb but apparently
+            // this is the way to do it whilst maintaining actual keycode values
+            KeyCode _candidateKey = KeyCode.None;
+            foreach( KeyCode k in AllPossibleKeys)
+            {
+                if ( Input.GetKey(k) && !AlreadyUsedKeys.Contains(k) )
+                {
+                    _candidateKey = k;
+                }
+            }
+            if (_candidateKey == KeyCode.None) return;
+            AlreadyUsedKeys.Add(_candidateKey);
+
+            // if this is a new player
+            if (CurrentlyJoining == null)
 			{
 				Debug.Log ("Creating new player");
 				CurrentlyJoining = new KeyData ();
-				CurrentlyJoining.KeyOne = _candidateKey.ToString();
+				CurrentlyJoining.KeyOne = _candidateKey;
 
 				Header1.SetActive (false);
 				Header2.SetActive (true);
@@ -127,7 +150,7 @@ public class CharacterSelect : State
 			// if we are finishing off the old player
 			else
 			{
-				CurrentlyJoining.KeyTwo = _candidateKey.ToString();
+				CurrentlyJoining.KeyTwo = _candidateKey;
 
 				Debug.LogFormat("Finishing new player {0},{1}",
 					CurrentlyJoining.KeyOne, CurrentlyJoining.KeyTwo);

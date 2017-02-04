@@ -29,9 +29,11 @@ public class OnWave : State
 		Controller = _controller;
 		SpriteGO = _onWaveGO;
 
+        Transform rotatingSurfer = SpriteGO.transform.FindChild("RotatingSurfer");
+        Debug.Log("Rotating surfer: " + rotatingSurfer);
         ScorePlacement = SpriteGO.transform.FindChild("ScorePlacement").gameObject;
-        ScoreMultiplierCanvas = SpriteGO.transform.FindChild("MultiplierCanvas").gameObject;
-        Surfboard = SpriteGO.transform.FindChild("Surfboard 2").gameObject;
+        ScoreMultiplierCanvas = rotatingSurfer.FindChild("MultiplierCanvas").gameObject;
+        Surfboard = rotatingSurfer.FindChild("Surfboard 2").gameObject;
 
         SpriteGO.SetActive (false);
 	}
@@ -71,7 +73,7 @@ public class OnWave : State
 
 		Controller.Score = 0;
 
-		PlayerController.SetSuitColor (SpriteGO, Controller.SuitColor);
+		PlayerController.SetSuitColor (SpriteGO.transform.GetChild(1).gameObject, Controller.SuitColor);
 
 		Paddle = Controller.game.factory.CreatePaddle ();
 		Paddle.AllWaveSegmentsReference = Controller.game.Waves.GetWaveSegments ();

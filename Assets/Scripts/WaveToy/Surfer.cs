@@ -9,7 +9,7 @@ public class Surfer : MonoBehaviour
     public float HorizontalVelocity = 0;
     public int CurrentSegmentIndex = 0;
 
-    private int MAX_SCORE_MULTIPLIER = 4;
+    private int MAX_SCORE_MULTIPLIER = 1;
     private float TIME_TO_INCREASE_MULTIPLIER = 5f;
     public int ScoreMultiplier = 1;
     public float TimeIncreasedMultiplier = 0;
@@ -41,6 +41,7 @@ public class Surfer : MonoBehaviour
 
     public void ObstacleHit()
     {
+        if (Stunned) return;
         PlayerVelocity = 0;
         InAir = false;
         Stunned = true;
@@ -48,6 +49,9 @@ public class Surfer : MonoBehaviour
         ScoreMultiplier = 1;
         Spins = 0;
         SpinAngle = 0;
+
+        PlayerScoreTrigger.ShowScore(-50, Color.red, ScoreTransform.position);
+        AddScore(-50);
     }
     void Update()
     {
@@ -154,14 +158,14 @@ public class Surfer : MonoBehaviour
         {
             Spins++;
         }
-        transform.GetChild(3).transform.localRotation = q;
+        transform.GetChild(3).GetChild(1).localRotation = q;
 
         if ( Spins > 0 )
         {
             //PlayerScoreTrigger.transform.position = transform.position;
             //PlayerScoreTrigger.transform.rotation = transform.rotation;
-            PlayerScoreTrigger.ShowScore(1000,Controller.SuitColor, ScoreTransform.position);
-            AddScore(1000);
+            PlayerScoreTrigger.ShowScore(100,Controller.SuitColor, ScoreTransform.position);
+            AddScore(100);
             Spins = 0;
             SpinAngle = 0;
         }

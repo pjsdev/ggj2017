@@ -6,8 +6,8 @@ using SimpleFSM;
 
 public class PlayerController : StateMachine 
 {	
-	public string KeyOne;
-	public string KeyTwo;
+	public KeyCode KeyOne;
+	public KeyCode KeyTwo;
 	public Color SuitColor;
 		
 	int ScoreInternal = 0;
@@ -47,6 +47,7 @@ public class PlayerController : StateMachine
 		var InMenuReadGO = transform.Find ("InMenuReady").gameObject;
 		var OnWaveGO = transform.Find ("OnWave").gameObject;
 
+        Debug.Log("PlayerController Start() InMenuGO: " + InMenuGO.name);
 		AddState (new InMenu(this, InMenuGO));
 		AddState (new InMenuReady(this, InMenuReadGO));
 		AddState (new OnWave (this, OnWaveGO));

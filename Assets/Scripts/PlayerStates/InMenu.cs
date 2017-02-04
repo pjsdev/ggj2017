@@ -50,10 +50,10 @@ public class InMenu : State
 		GameObject textGo = GameObject.Instantiate(Resources.Load("KeysUI")) as GameObject;
 		KeysUI = textGo.transform;
 			
-		KeysUI.Find("KeyOne").GetChild(0).GetComponent<Text>().text = Controller.KeyOne.ToUpper();
-		KeysUI.Find("KeyTwo").GetChild(0).GetComponent<Text>().text = Controller.KeyTwo.ToUpper();
+		KeysUI.Find("KeyOne").GetChild(0).GetComponent<Text>().text = Controller.KeyOne.ToString().ToUpper();
+		KeysUI.Find("KeyTwo").GetChild(0).GetComponent<Text>().text = Controller.KeyTwo.ToString().ToUpper();
 		KeysUI.transform.SetParent(TextCanvas.transform, false);
-		KeysUI.transform.position = Camera.main.WorldToScreenPoint(SpriteGO.transform.position) + new Vector3(0, -140f, 0);
+		KeysUI.transform.position = Camera.main.WorldToScreenPoint(SpriteGO.transform.position) + new Vector3(0, -240f, 0);
 	}
 
 	#region State implementation
@@ -61,7 +61,7 @@ public class InMenu : State
 	public void Update ()
 	{
 		// Debug.LogFormat ("{0} [{1}]", IsReady, ReadyTime);
-		if (Input.GetKey (Controller.KeyOne))
+		if (Input.GetKey(Controller.KeyOne))
 		{
 			ReadyTimer += Time.deltaTime;
 

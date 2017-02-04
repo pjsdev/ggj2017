@@ -16,7 +16,7 @@ public class Playing : State
 	GameObject ObstacleSpawners;
 	AudioClip Music;
 
-	readonly static float RoundTime = 10f;
+	readonly static float RoundTime = 100f;
 	float CurrentTime;
 	Text Timer;
 	Text StylePoints;

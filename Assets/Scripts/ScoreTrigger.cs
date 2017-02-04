@@ -41,8 +41,11 @@ public class ScoreTrigger : MonoBehaviour
     }
     public void ShowScore(int _Score, Color colour, Vector3? _pos )
     {
+        Vector3 pos = _pos ?? transform.position;
+
         Text txt = GetTextField();
-        txt.transform.position = Camera.main.WorldToScreenPoint( transform.position );
+        txt.DOKill(false);
+        txt.transform.position = Camera.main.WorldToScreenPoint(pos);
         txt.transform.rotation = transform.rotation;
 
         txt.text = _Score.ToString();
@@ -51,9 +54,7 @@ public class ScoreTrigger : MonoBehaviour
         txt.DOFade(0f, FadeOutDuration).SetDelay(ShowScoreDuration);
         //txt.transform.DOLocalMoveY(txt.transform.position.y + 0.1f, FadeInDuration + FadeOutDuration + ShowScoreDuration);
 
-        Vector3 pos = _pos ?? (transform.position + RotationComponents * 0.8f);
-
-        txt.transform.DOMove(Camera.main.WorldToScreenPoint(pos), FadeInDuration + FadeOutDuration + ShowScoreDuration);
+        txt.transform.DOMove(Camera.main.WorldToScreenPoint(pos + RotationComponents * 0.8f), FadeInDuration + FadeOutDuration + ShowScoreDuration);
         //txt.transform.DOLocalMoveY(txt.transform.position.y + RotationComponents.x * 0.1f, FadeInDuration + FadeOutDuration + ShowScoreDuration);
         //txt.transform.DOScale(1.2f, FadeInDuration + FadeOutDuration + ShowScoreDuration);
     }

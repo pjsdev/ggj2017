@@ -127,7 +127,7 @@ public class Factory : MonoBehaviour
 		return paddle;
 	}
 
-	public PlayerController CreatePlayerController(string _keyOne, string _keyTwo, Vector3 _pos)
+	public PlayerController CreatePlayerController(KeyCode _keyOne, KeyCode _keyTwo, Vector3 _pos)
 	{
 		var created = Instantiate (PlayerController, _pos, Quaternion.identity);
 		var controller = created.GetComponent<PlayerController> ();
