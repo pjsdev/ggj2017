@@ -14,7 +14,7 @@ public class Surfer : MonoBehaviour
     public int ScoreMultiplier = 1;
     public float TimeIncreasedMultiplier = 0;
 
-    private Game GameComponent;
+    //private Game GameComponent;
     private float PlayerVelocity = 0;
     private float PlayerHeight = 0;
 
@@ -74,7 +74,7 @@ public class Surfer : MonoBehaviour
                 Debug.Log("SCORE MULTIPLIER INCREASED! " + ScoreMultiplier);
             }
         }
-        GameComponent = GameObject.FindObjectOfType<Game>();
+        //GameComponent = GameObject.FindObjectOfType<Game>();
 
         float _angle = transform.eulerAngles.z - 90f;
         _angle = (_angle % 360f); if (_angle < 0) _angle += 360f;

@@ -64,10 +64,12 @@ public class DiscreteWave : MonoBehaviour
         {
             SolveSegmentAmplitudes();
         }
+        Vector3 WavePos = Vector3.zero;
         for (int i = 0; i < AllWaveSegments.Count; ++i)
         {
+            WavePos.y = 3f + (AllWaveSegments[i].Amplitude * MAX_WAVE_HEIGHT);
             //SegmentGameObjects[i].transform.GetChild(0).localScale = new Vector3(0, 1f + (AllWaveSegments[i].Amplitude * 1f), 0);
-            SegmentGameObjects[i].transform.GetChild(2).localPosition = new Vector3(0, 3f + (AllWaveSegments[i].Amplitude * MAX_WAVE_HEIGHT), 0);
+            SegmentGameObjects[i].transform.GetChild(2).localPosition = WavePos;
         }
     }
     private float SignedMod(float a, float n)
