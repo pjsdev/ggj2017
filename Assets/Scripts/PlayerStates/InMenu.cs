@@ -53,7 +53,7 @@ public class InMenu : State
 		KeysUI.Find("KeyOne").GetChild(0).GetComponent<Text>().text = Controller.KeyOne.ToString().ToUpper();
 		KeysUI.Find("KeyTwo").GetChild(0).GetComponent<Text>().text = Controller.KeyTwo.ToString().ToUpper();
 		KeysUI.transform.SetParent(TextCanvas.transform, false);
-		KeysUI.transform.position = Camera.main.WorldToScreenPoint(SpriteGO.transform.position) + new Vector3(0, -240f, 0);
+		KeysUI.transform.position = Camera.main.WorldToScreenPoint(SpriteGO.transform.position) + new Vector3(0, -100f, 0);
 	}
 
 	#region State implementation
