@@ -9,7 +9,9 @@ public class PlayerController : StateMachine
 	public KeyCode KeyOne;
 	public KeyCode KeyTwo;
 	public Color SuitColor;
-		
+
+    public bool PlayerIsStunned = false;
+    	
 	int ScoreInternal = 0;
 	public int Score 
 	{

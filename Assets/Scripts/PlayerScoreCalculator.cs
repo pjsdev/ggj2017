@@ -19,7 +19,7 @@ public class PlayerScoreCalculator : MonoBehaviour
 
     public void Hit( ScoreTrigger trigger )
     {
-        if (trigger != null && !RecentlyHitTriggers.Contains(trigger) )
+        if (trigger != null && !RecentlyHitTriggers.Contains(trigger) && !controller.PlayerIsStunned)
         {
             controller.Score += trigger.Score;
             RecentlyHitTriggers.Add(trigger);

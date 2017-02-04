@@ -57,6 +57,8 @@ public class Surfer : MonoBehaviour
     {
         if (AllWaveSegmentsReference == null) return;
 
+        Controller.PlayerIsStunned = Stunned;
+
         if ( Stunned )
         {
 			q.eulerAngles = new Vector3(0, 0, Mathf.Lerp( q.eulerAngles.z * Time.deltaTime * 40f, 180f, 0.3f) );
@@ -142,15 +144,16 @@ public class Surfer : MonoBehaviour
             {
                 AddScore(1);
 
+                float spinAmount = 13f * Time.deltaTime * 40f;
                 if (Input.GetKey(Controller.KeyOne))
                 {
-                    SpinAngle += 13f;
-                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z + 13f);
+                    SpinAngle += spinAmount;
+                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z + spinAmount);
                 }
                 if (Input.GetKey(Controller.KeyTwo))
                 {
-                    SpinAngle -= 13f;
-                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z - 13f);
+                    SpinAngle -= spinAmount;
+                    q.eulerAngles = new Vector3(0, 0, q.eulerAngles.z - spinAmount);
                 }
             }
         }
